@@ -1,0 +1,30 @@
+{
+	"name": "team2-final-project",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest",
+		"prepare": "husky install"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/robdan54/team2-final-project.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/robdan54/team2-final-project/issues"
+	},
+	"homepage": "https://github.com/robdan54/team2-final-project#readme",
+	"devDependencies": {
+		"eslint": "^8.11.0",
+		"eslint-config-google": "^0.14.0",
+		"husky": "^7.0.4",
+		"jest": "^27.5.1"
+	},
+	"dependencies": {
+		"express": "^4.17.3"
+	}
+}
