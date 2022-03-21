@@ -34,7 +34,6 @@ async function testing() {
     // saved!
   });
 
-
   SomeModel.find({name: 'testname'}, (err, names) => {
     console.log(names);
   });
