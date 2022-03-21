@@ -20,7 +20,8 @@
 	"homepage": "https://github.com/robdan54/team2-final-project#readme",
 	"devDependencies": {
 		"eslint": "^8.11.0",
-		"eslint-config-google": "^0.14.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.25.4",
 		"husky": "^7.0.4",
 		"jest": "^27.5.1",
 		"jest-extended": "^2.0.0",
