@@ -1,49 +1,46 @@
 /** @format */
 
-//Import the mongoose module
-var mongoose = require('mongoose');
+// Import the mongoose module
+const mongoose = require('mongoose');
 
-//Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/test';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+// Set up default mongoose connection
+const mongoDB = 'mongodb://127.0.0.1/test';
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
-//Get the default connection
-var db = mongoose.connection;
+// Get the default connection
+const db = mongoose.connection;
 
-//Bind connection to error event (to get notification of connection errors)
+// Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var SomeModelSchema = new Schema({
-	name: String,
+const SomeModelSchema = new Schema({
+  name: String,
 });
 
-var SomeModel = mongoose.model('SomeModel', SomeModelSchema);
+const SomeModel = mongoose.model('SomeModel', SomeModelSchema);
 
-var awesome_instance = new SomeModel({ name: 'testname' });
+const awesome_instance = new SomeModel({name: 'testname'});
 
 async function testing() {
+  await awesome_instance.save(function(err) {
+    if (err) return handleError(err);
+    // saved!
+  });
 
-    await awesome_instance.save(function (err) {
-        if (err) return handleError(err);
-        // saved!
-    })
-
-    SomeModel.create({ name: 'also_awesome' }, function (err, awesome_instance) {
-        if (err) return handleError(err);
-        // saved!
-    });
-
+  SomeModel.create({name: 'also_awesome'}, function(err, awesome_instance) {
+    if (err) return handleError(err);
+    // saved!
+  });
 
 
-    SomeModel.find({ name: 'testname' }, (err, names) => {
-        console.log(names);
-    });
-    
+  SomeModel.find({name: 'testname'}, (err, names) => {
+    console.log(names);
+  });
 }
 
-testing()
+testing();
 
 // #! /usr/bin/env node
 // /** @format */
