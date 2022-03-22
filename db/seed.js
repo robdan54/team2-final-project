@@ -3,39 +3,51 @@
 const mongoose = require('mongoose');
 const db = require('./connection');
 const {
-  dropDatabase,
-  createCollections,
+	dropDatabase,
+	createCollections,
 } = require('./helpers/manage-collections');
 
 const seed = async ({
-  categoriesData,
-  charitiesUserData,
-  charityReqsData,
-  donatorItemsData,
-  donatorUsersData,
-  itemsData,
+	categoriesData,
+	charitiesUserData,
+	charityReqsData,
+	donatorItemsData,
+	donatorUsersData,
+	itemsData,
 }) => {
-  //  drops the data base before initializing
-  await dropDatabase();
+	//  drops the data base before initializing
+	await dropDatabase();
 
-  //  defines a 'schema' for each table which is a template for a collection (table)
-  const {
-    Charity,
-    Category,
-    CharityRequirement,
-    DonatorItem,
-    Donator,
-    Item,
-  } = await createCollections();
-  console.log(Category);
+	//  defines a 'schema' for each table which is a template for a collection (table)
+	const { Category, Charity, CharityRequirement, DonatorItem, Donator, Item } =
+		await createCollections();
+	//console.log(Category);
 
-  //  creates the 'Charities' collection using the CharityUserScheme defined in create collections
+	//  creates the 'Charities' collection using the CharityUserScheme defined in create collections
 
-  categoriesData.forEach((category) => {
-    Category.create(category, (err, instanceCategory) => {
-      console.log(instanceCategory);
-    });
-  });
+	// await Category.insertMany(categoriesData);
+
+  await Charity.create(charitiesUserData);
+
+	// await CharityRequirement.insertMany(charityReqsData);
+
+	// donatorItemsData.forEach((donatorItems) => {
+	// 	DonatorItem.create(donatorItems, (err, instanceDonorItems) => {
+	// 		console.log(instanceDonorItems);
+	// 	});
+	// });
+
+	// donatorUsersData.forEach((donor) => {
+	// 	Donator.create(donor, (err, instanceDonor) => {
+	// 		console.log(instanceDonor);
+	// 	});
+	// });
+
+	// itemsData.forEach((item) => {
+	// 	Item.create(item, (err, instanceItem) => {
+	// 		console.log(instanceItem);
+	// 	});
+	// });
 };
 
 module.exports = seed;

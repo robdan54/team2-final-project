@@ -34,6 +34,7 @@
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "husky": "^7.0.4",
-    "mongoose": "^6.2.7"
+    "mongoose": "^6.2.7",
+    "mongoose-sequence": "^5.3.1"
   }
 }
