@@ -1,7 +1,20 @@
 const mongoose = require('mongoose');
-const db = require('./db/connection');
+const db = require('./connection');
+const { dropDatabase, createCollections } = require('./helpers/manage-collections');
 
 const { Schema } = mongoose;
+
+const seed = async ({
+  categoriesData,
+  charitiesUserData,
+  charityReqsData,
+  donatorItemsData,
+  donatorUsersData,
+  itemsData,
+}) => {
+  await dropDatabase();
+  await createCollections();
+};
 
 //  drops database
 
@@ -22,7 +35,7 @@ const CharityUserSchema = new Schema({
 
 //  creates the 'Charities' collection using the CharityUserScheme defined above
 
-const Charity = mongoose.model('Charities', CharityUserSchema);
+const Charity = mongoose.model('Charity', CharityUserSchema);
 
 //  creates a instance of the charity model (a document (record) in a collection)
 
