@@ -1,8 +1,11 @@
+/** @format */
+
 const mongoose = require('mongoose');
 const db = require('./connection');
-const { dropDatabase, createCollections } = require('./helpers/manage-collections');
-
-const { Schema } = mongoose;
+const {
+  dropDatabase,
+  createCollections,
+} = require('./helpers/manage-collections');
 
 const seed = async ({
   categoriesData,
@@ -12,44 +15,44 @@ const seed = async ({
   donatorUsersData,
   itemsData,
 }) => {
+  //  drops the data base before initializing
   await dropDatabase();
-  await createCollections();
+
+  //  defines a 'schema' for each table which is a template for a collection (table)
+  const {
+    Charity,
+    Category,
+    CharityRequirement,
+    DonatorItem,
+    Donator,
+    Item,
+  } = await createCollections();
+  console.log(Category);
+
+  //  creates the 'Charities' collection using the CharityUserScheme defined in create collections
+
+  categoriesData.forEach((category) => {
+    Category.create(category, (err, instanceCategory) => {
+      console.log(instanceCategory);
+    });
+  });
 };
 
-//  drops database
-
-db.dropDatabase(() => {
-  console.log("dropped database - I hope you know what you're doing");
-});
-
-//  defines a 'schema' which is a template for a collection (table)
-
-const CharityUserSchema = new Schema({
-  charityName: String,
-  address: String,
-  charityWebsite: String,
-  charityUsername: String,
-  password: String,
-  emailAddress: String,
-});
-
-//  creates the 'Charities' collection using the CharityUserScheme defined above
-
-const Charity = mongoose.model('Charity', CharityUserSchema);
+module.exports = seed;
 
 //  creates a instance of the charity model (a document (record) in a collection)
 
-const testInstance = new Charity({
-  charityName: 'Charity 1',
-  address: '1 charity road, location1, A666AA',
-  charityWebsite: 'testcharitywebsite1',
-  charityusername: 'CharityUser1',
-  password: 'TestCharityPassword1',
-  emailAddress: 'testEmail1',
-});
+// const testInstance = new Charity({
+// 	charityName: 'Charity 1',
+// 	address: '1 charity road, location1, A666AA',
+// 	charityWebsite: 'testcharitywebsite1',
+// 	charityusername: 'CharityUser1',
+// 	password: 'TestCharityPassword1',
+// 	emailAddress: 'testEmail1',
+// });
 
-//  saves the document (record) to the Charities collection (table) defined by the model in line 25
+// //  saves the document (record) to the Charities collection (table) defined by the model in line 25
 
-testInstance.save(() => {
-  db.close();
-});
+// testInstance.save(() => {
+// 	db.close();
+// });

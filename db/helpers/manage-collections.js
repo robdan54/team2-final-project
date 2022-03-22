@@ -9,7 +9,7 @@ const dropDatabase = async () => {
   });
 };
 
-const createSchemas = async () => {
+const createCollections = async () => {
   const CharityUserSchema = new Schema({
     charityName: String,
     address: String,
@@ -45,14 +45,25 @@ const createSchemas = async () => {
     itemName: String,
     categoryName: { type: Schema.Types.ObjectId, ref: 'Category' }, //  model name Category
   });
-  return {
-    CharityUserSchema,
-    CategorySchema,
+
+  const Charity = mongoose.model('Charity', CharityUserSchema);
+  const Category = mongoose.model('Category', CategorySchema);
+  const CharityRequirement = mongoose.model(
+    'CharityRequirement',
     CharityRequirementSchema,
-    DonatorItemSchema,
-    DonatorUserSchema,
-    ItemSchema,
+  );
+  const DonatorItem = mongoose.model('DonatorItem', DonatorItemSchema);
+  const Donator = mongoose.model('Donator', DonatorUserSchema);
+  const Item = mongoose.model('Item', ItemSchema);
+
+  return {
+    Charity,
+    Category,
+    CharityRequirement,
+    DonatorItem,
+    Donator,
+    Item,
   };
 };
 
-module.exports = { dropDatabase, createSchemas };
+module.exports = { dropDatabase, createCollections };
