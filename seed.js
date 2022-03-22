@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
-
-const mongoDB = 'mongodb://127.0.0.1/test';
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const db = require('./db/connection');
 
 const { Schema } = mongoose;
+
+db.dropCollection('users', (err, result) => {
+  console.log('users collection dropped');
+});
 
 const UserSchema = new Schema({
   username: String,
@@ -18,10 +17,12 @@ const UserSchema = new Schema({
 const User = mongoose.model('User', UserSchema);
 
 const testInstance = new User({
-  username: 'Testuser',
+  username: 'Testuser1',
   password: 'Testuserpassword',
   emailAddress: 'testemail',
   PostCode: 'B111BB',
 });
 
-testInstance.save();
+testInstance.save(() => {
+  db.close();
+});
