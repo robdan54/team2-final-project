@@ -10,14 +10,16 @@ db.dropDatabase(() => {
 //   console.log('users collection dropped');
 // });
 
-const UserSchema = new Schema({
-  username: String,
+const CharityUserSchema = new Schema({
+  charityName: String,
+  address: String,
+  charityWebsite: String,
+  charityUsername: String,
   password: String,
   emailAddress: String,
-  PostCode: String,
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', CharityUserSchema);
 
 const testInstance = new User({
   username: 'Testuser1',
