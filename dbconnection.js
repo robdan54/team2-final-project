@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+
 /** @format */
 
 // Import the mongoose module
@@ -5,7 +7,7 @@ const mongoose = require('mongoose');
 
 // Set up default mongoose connection
 const mongoDB = 'mongodb://127.0.0.1/test';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Get the default connection
 const db = mongoose.connection;
@@ -13,7 +15,7 @@ const db = mongoose.connection;
 // Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const SomeModelSchema = new Schema({
   name: String,
@@ -21,20 +23,20 @@ const SomeModelSchema = new Schema({
 
 const SomeModel = mongoose.model('SomeModel', SomeModelSchema);
 
-const awesome_instance = new SomeModel({name: 'testname'});
+const awesome_instance = new SomeModel({ name: 'testname' });
 
 async function testing() {
-  await awesome_instance.save(function(err) {
+  await awesome_instance.save((err) => {
     if (err) return handleError(err);
     // saved!
   });
 
-  SomeModel.create({name: 'also_awesome'}, function(err, awesome_instance) {
+  SomeModel.create({ name: 'also_awesome' }, (err, awesome_instance) => {
     if (err) return handleError(err);
     // saved!
   });
 
-  SomeModel.find({name: 'testname'}, (err, names) => {
+  SomeModel.find({ name: 'testname' }, (err, names) => {
     console.log(names);
   });
 }

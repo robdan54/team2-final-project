@@ -1,39 +1,39 @@
 {
-	"name": "team2-final-project",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "jest",
-		"prepare": "husky install"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/robdan54/team2-final-project.git"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/robdan54/team2-final-project/issues"
-	},
-	"homepage": "https://github.com/robdan54/team2-final-project#readme",
-	"devDependencies": {
-		"eslint": "^8.11.0",
-		"eslint-config-airbnb-base": "^15.0.0",
-		"eslint-plugin-import": "^2.25.4",
-		"husky": "^7.0.4",
-		"jest": "^27.5.1",
-		"jest-extended": "^2.0.0",
-		"jest-sorted": "^1.0.14",
-		"nodemon": "^2.0.15",
-		"supertest": "^6.2.2"
-	},
-	"dependencies": {
-		"async": "^3.2.3",
-		"cors": "^2.8.5",
-		"dotenv": "^16.0.0",
-		"express": "^4.17.3",
-		"mongoose": "^6.2.7"
-	}
+  "name": "team2-final-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robdan54/team2-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robdan54/team2-final-project/issues"
+  },
+  "homepage": "https://github.com/robdan54/team2-final-project#readme",
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
+    "husky": "^4.3.8",
+    "jest": "^27.5.1",
+    "jest-extended": "^2.0.0",
+    "jest-sorted": "^1.0.14",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
+  },
+  "dependencies": {
+    "async": "^3.2.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.7"
+  }
 }

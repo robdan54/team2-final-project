@@ -3,7 +3,7 @@ const db = require('./db/connection');
 
 const { Schema } = mongoose;
 
-db.dropCollection('users', (err, result) => {
+db.dropCollection('users', () => {
   console.log('users collection dropped');
 });
 
