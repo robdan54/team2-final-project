@@ -3,12 +3,13 @@ const db = require('./db/connection');
 
 const { Schema } = mongoose;
 
+//  drops database
+
 db.dropDatabase(() => {
   console.log("dropped database - I hope you know what you're doing");
 });
-// db.dropCollection('users', () => {
-//   console.log('users collection dropped');
-// });
+
+//  defines a 'schema' which is a template for a collection (table)
 
 const CharityUserSchema = new Schema({
   charityName: String,
@@ -19,14 +20,22 @@ const CharityUserSchema = new Schema({
   emailAddress: String,
 });
 
-const User = mongoose.model('User', CharityUserSchema);
+//  creates the 'Charities' collection using the CharityUserScheme defined above
 
-const testInstance = new User({
-  username: 'Testuser1',
-  password: 'Testuserpassword',
-  emailAddress: 'testemail',
-  PostCode: 'B111BB',
+const Charity = mongoose.model('Charities', CharityUserSchema);
+
+//  creates a instance of the charity model (a document (record) in a collection)
+
+const testInstance = new Charity({
+  charityName: 'Charity 1',
+  address: '1 charity road, location1, A666AA',
+  charityWebsite: 'testcharitywebsite1',
+  charityusername: 'CharityUser1',
+  password: 'TestCharityPassword1',
+  emailAddress: 'testEmail1',
 });
+
+//  saves the document (record) to the Charities collection (table) defined by the model in line 25
 
 testInstance.save(() => {
   db.close();
