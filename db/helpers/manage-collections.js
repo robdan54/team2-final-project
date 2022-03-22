@@ -23,9 +23,9 @@ const createCollections = async () => {
       emailAddress: String,
     },
     { _id: false },
-    );
-    CharityUserSchema.plugin(AutoIncrement);
-    
+  );
+  CharityUserSchema.plugin(AutoIncrement);
+
   const CategorySchema = new Schema({
     categoryName: String,
   });
