@@ -1,5 +1,4 @@
-{
-[
+module.exports = [
   {
     charityName: 'Charity 1',
     address: '1 charity road, location1, A666AA',
@@ -40,5 +39,4 @@
     password: 'TestCharityPassword5',
     emailAddress: 'testEmail5',
   },
-]
-}
+];

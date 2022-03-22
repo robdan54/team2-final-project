@@ -1,0 +1,42 @@
+module.exports = [
+  {
+    username: 'TestUser1',
+    password: 'Testuserpassword1',
+    emailAddress: 'testemail1',
+    addressLine1: '1 roady road',
+    addressLine2: 'Walmley',
+    postCode: 'A111AA',
+  },
+  {
+    username: 'Testuser2',
+    password: 'Testuserpassword2',
+    emailAddress: 'testemail2',
+    addressLine1: '2 winding road',
+    addressLine2: 'Coldley',
+    postCode: 'B222BB',
+  },
+  {
+    username: 'Testuser3',
+    password: 'Testuserpassword3',
+    emailAddress: 'testemail3',
+    addressLine1: '3 electric avenue',
+    addressLine2: 'Breezly',
+    postCode: 'B333BB',
+  },
+  {
+    username: 'Testuser4',
+    password: 'Testuserpassword4',
+    emailAddress: 'testemail4',
+    addressLine1: '4 banana way',
+    addressLine2: 'Snowly',
+    postCode: 'B444BB',
+  },
+  {
+    username: 'Testuser5',
+    password: 'Testuserpassword5',
+    emailAddress: 'testemail5',
+    addressLine1: '5 five ride',
+    addressLine2: 'jacksonville',
+    postCode: 'B555BB',
+  },
+];

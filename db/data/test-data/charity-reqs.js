@@ -1,0 +1,51 @@
+module.exports = [
+  {
+    charity_id_number: '0001',
+    category: 'food',
+    item_ID: '0001',
+    itemName: 'cereal',
+    quantityRequired: '20',
+  },
+  {
+    charity_id_number: '0001',
+    category: 'furniture',
+    item_ID: '0005',
+    itemName: 'chair',
+    quantityRequired: '5',
+  },
+  {
+    charity_id_number: '0003',
+    category: 'food',
+    item_ID: '0002',
+    itemName: 'soup',
+    quantityRequired: '30',
+  },
+  {
+    charity_id_number: '0003',
+    category: 'toiletries',
+    item_ID: '0006',
+    itemName: 'deodorant',
+    quantityRequired: '10',
+  },
+  {
+    charity_id_number: '0003',
+    category: 'household items',
+    item_ID: '0011',
+    itemName: 'washing up liquid',
+    quantityRequired: '25',
+  },
+  {
+    charity_id_number: '0004',
+    category: 'food',
+    item_ID: '0002',
+    itemName: 'soup',
+    quantityRequired: '200',
+  },
+  {
+    charity_id_number: '0005',
+    category: 'feminine products',
+    item_ID: '0012',
+    itemName: 'sanitary towels',
+    quantityRequired: '60',
+  },
+];
