@@ -3,9 +3,12 @@ const db = require('./db/connection');
 
 const { Schema } = mongoose;
 
-db.dropCollection('users', () => {
-  console.log('users collection dropped');
+db.dropDatabase(() => {
+  console.log("dropped database - I hope you know what you're doing");
 });
+// db.dropCollection('users', () => {
+//   console.log('users collection dropped');
+// });
 
 const UserSchema = new Schema({
   username: String,
