@@ -1,9 +1,2 @@
-dbconnection.js
-genre.js
-bookinstance.js
-book.js
-author.js
 passes.test.js
-charities-users.js
-seed.js
 *.test.js

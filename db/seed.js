@@ -1,7 +1,7 @@
 /** @format */
 
-const mongoose = require('mongoose');
-const db = require('./connection');
+// const mongoose = require('mongoose');
+// const db = require('./connection');
 const { dropDatabase, createCollections } = require('./helpers/manage-collections');
 
 const seed = async ({
@@ -18,9 +18,12 @@ const seed = async ({
 
   //  defines a 'schema' for each table which is a template for a collection (table)
 
-  const { Category, Charity, CharityRequirement, DonatorItem, Donator, Item } = await createCollections();
+  const {
+    Category, Charity, CharityRequirement, DonatorItem, Donator, Item,
+  } = await createCollections();
 
-  //  creates the collections (tables) using the schemas defined in create collections function and is passed the relevant data as an argument
+  //  creates the collections (tables) using the schemas defined in create
+  // collections function and is passed the relevant data as an argument
 
   await Charity.create(charitiesUserData);
   await Category.create(categoriesData);
