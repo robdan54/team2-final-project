@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const AutoIncrement = require('mongoose-sequence')(mongoose);
+const AutoIncrement = require('mongoose-sequence')(mongoose); // plugs mongoose
 
 const db = require('../connection');
 
@@ -22,16 +22,16 @@ const createCollections = async () => {
       password: String,
       emailAddress: String,
     },
-    { _id: false },
+    { _id: false }, // removes mongooses control of the id field
   );
-  CharityUserSchema.plugin(AutoIncrement);
+  CharityUserSchema.plugin(AutoIncrement); // adds the auto increment plugin to the schema
 
   const CategorySchema = new Schema({
     categoryName: String,
   });
 
   const DonatorUserSchema = new Schema({
-    // _id: db.donators.find().Count() + 1 ,
+
     username: String,
     password: String,
     emailAddress: String,
