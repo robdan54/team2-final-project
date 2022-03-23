@@ -2,52 +2,51 @@
 
 const mongoose = require('mongoose');
 const db = require('./connection');
-const {
-	dropDatabase,
-	createCollections,
-} = require('./helpers/manage-collections');
+const { dropDatabase, createCollections } = require('./helpers/manage-collections');
 
 const seed = async ({
-	categoriesData,
-	charitiesUserData,
-	charityReqsData,
-	donatorItemsData,
-	donatorUsersData,
-	itemsData,
+  categoriesData,
+  charitiesUserData,
+  charityReqsData,
+  donatorItemsData,
+  donatorUsersData,
+  itemsData,
 }) => {
-	//  drops the data base before initializing
-	await dropDatabase();
+  //  drops the data base before initializing
+  await dropDatabase();
 
-	//  defines a 'schema' for each table which is a template for a collection (table)
-	const { Category, Charity, CharityRequirement, DonatorItem, Donator, Item } =
-		await createCollections();
-	//console.log(Category);
+  //  defines a 'schema' for each table which is a template for a collection (table)
+  const { Category, Charity, CharityRequirement, DonatorItem, Donator, Item } = await createCollections();
+  //console.log(Category);
 
-	//  creates the 'Charities' collection using the CharityUserScheme defined in create collections
-
-	// await Category.insertMany(categoriesData);
+  //  creates the 'Charities' collection using the CharityUserScheme defined in create collections
 
   await Charity.create(charitiesUserData);
+  await Category.create(categoriesData);
+  await CharityRequirement.create(charityReqsData);
+  await DonatorItem.create(donatorItemsData);
+  await Donator.create(donatorUsersData);
+  await Item.create(itemsData);
 
-	// await CharityRequirement.insertMany(charityReqsData);
+  // await CharityRequirement.insertMany(charityReqsData);
 
-	// donatorItemsData.forEach((donatorItems) => {
-	// 	DonatorItem.create(donatorItems, (err, instanceDonorItems) => {
-	// 		console.log(instanceDonorItems);
-	// 	});
-	// });
+  // donatorItemsData.forEach((donatorItems) => {
+  // 	DonatorItem.create(donatorItems, (err, instanceDonorItems) => {
+  // 		console.log(instanceDonorItems);
+  // 	});
+  // });
 
-	// donatorUsersData.forEach((donor) => {
-	// 	Donator.create(donor, (err, instanceDonor) => {
-	// 		console.log(instanceDonor);
-	// 	});
-	// });
+  // donatorUsersData.forEach((donor) => {
+  // 	Donator.create(donor, (err, instanceDonor) => {
+  // 		console.log(instanceDonor);
+  // 	});
+  // });
 
-	// itemsData.forEach((item) => {
-	// 	Item.create(item, (err, instanceItem) => {
-	// 		console.log(instanceItem);
-	// 	});
-	// });
+  // itemsData.forEach((item) => {
+  // 	Item.create(item, (err, instanceItem) => {
+  // 		console.log(instanceItem);
+  // 	});
+  // });
 };
 
 module.exports = seed;

@@ -12,26 +12,25 @@ const dropDatabase = async () => {
 };
 
 const createCollections = async () => {
-  const CharityUserSchema = new Schema(
-    {
-      _id: Number,
-      charityName: String,
-      address: String,
-      charityWebsite: String,
-      charityUsername: String,
-      password: String,
-      emailAddress: String,
-    },
-    { _id: false }, // removes mongooses control of the id field
-  );
-  CharityUserSchema.plugin(AutoIncrement); // adds the auto increment plugin to the schema
+  const CharityUserSchema = new Schema({
+    charity_user_id: Number,
+    charityName: String,
+    address: String,
+    charityWebsite: String,
+    charityUsername: String,
+    password: String,
+    emailAddress: String,
+  });
+  CharityUserSchema.plugin(AutoIncrement, { id: 'charityUserId', inc_field: 'charity_user_id' }); // adds the auto increment plugin to the schema
 
   const CategorySchema = new Schema({
+    category_id: Number,
     categoryName: String,
   });
+  CategorySchema.plugin(AutoIncrement, { id: 'categoryId', inc_field: 'category_id' });
 
   const DonatorUserSchema = new Schema({
-
+    donator_id: Number,
     username: String,
     password: String,
     emailAddress: String,
@@ -39,30 +38,36 @@ const createCollections = async () => {
     addressLine2: String,
     postCode: String,
   });
+  DonatorUserSchema.plugin(AutoIncrement, { id: 'donatorUsersId', inc_field: 'donator_id' });
+
   const ItemSchema = new Schema({
+    item_id: Number,
     itemName: String,
-    categoryName: { type: String, ref: 'Category' }, //  model name Category
+    categoryName: String,
   });
+  ItemSchema.plugin(AutoIncrement, { id: 'itemId', inc_field: 'item_id' });
+
   const CharityRequirementSchema = new Schema({
-    charity_id_number: { type: Schema.Types.ObjectId, ref: 'Charity' }, //  model name Charity
-    category: { type: String, ref: 'Category' }, //  model name Category
+    charity_requirement_id: Number,
+    charity_user_id: Number,
+    categoryName: String,
     itemName: String,
     quantityRequired: Number,
   });
+  CharityRequirementSchema.plugin(AutoIncrement, { id: 'charityReqsId', inc_field: 'charity_requirement_id' });
+
   const DonatorItemSchema = new Schema({
-    donator_ID_number: { type: Schema.Types.ObjectId, ref: 'Donator' }, //  model name Donator
-    category: { type: String, ref: 'Category' }, //  model name Category
+    donator_item_id: Number,
+    donator_id: Number,
+    categoryName: String,
     itemName: String,
     quantityAvailable: Number,
   });
+  DonatorItemSchema.plugin(AutoIncrement, { id: 'donatorItemId', inc_field: 'donator_item_id' });
 
   const Charity = mongoose.model('Charity', CharityUserSchema);
   const Category = mongoose.model('Category', CategorySchema);
-  const CharityRequirement = mongoose.model(
-    'CharityRequirement',
-    CharityRequirementSchema,
-  );
-
+  const CharityRequirement = mongoose.model('CharityRequirement', CharityRequirementSchema);
   const DonatorItem = mongoose.model('DonatorItem', DonatorItemSchema);
   const Donator = mongoose.model('Donator', DonatorUserSchema);
   const Item = mongoose.model('Item', ItemSchema);
