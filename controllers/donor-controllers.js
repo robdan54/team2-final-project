@@ -1,4 +1,4 @@
-const { fetchDonors, fetchCharities } = require('../models/donor-models');
+const { fetchDonors, postDonor } = require('../models/donor-models');
 
 exports.getDonors = (req, res, next) => {
   fetchDonors()
@@ -10,12 +10,10 @@ exports.getDonors = (req, res, next) => {
     });
 };
 
-exports.getCharities = (req, res, next) => {
-  fetchCharities()
-    .then((charities) => {
-      res.status(200).send({ charities });
-    })
-    .catch((err) => {
-      next(err);
-    });
+exports.sendDonor = (req, res, next) => {
+  const { body } = req;
+  postDonor(body).then((donor) => {
+    console.log(donor);
+    res.status(201).send({ donor });
+  }).catch(next);
 };

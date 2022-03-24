@@ -29,6 +29,43 @@ describe('/api/donors', () => {
           });
         });
     });
+
+    describe('POST', () => {
+        test('add a donor to the database', () => {
+
+            const testUser = {
+                username: 'TestUserForTesting',
+                password: 'TestPasswordForTesting',
+                address: '1 test street, test town, testingshire, TE57 1NG',
+                email_address: 'testEmail@testing.test'
+            }
+
+            return request(app).post('/api/donors').send(testUser).then(() => {
+                return request(app).get("/api/donors").then((response) => {
+                    expect(response.body.donors).toHaveLength(6);
+                })
+            });
+        });
+        test('should respond with the new user object and code 201', () => {
+            const testUser = {
+                username: 'TestUserForTesting',
+                password: 'TestPasswordForTesting',
+                address: '1 test street, test town, testingshire, TE57 1NG',
+                email_address: 'testEmail@testing.test'
+            }
+
+            return request(app).post('/api/donors').send(testUser).expect(201).then(({ body : {donor} }) => {
+                expect(donor).toEqual({
+                    donator_id: 6,
+                     username: 'TestUserForTesting',
+                password: 'TestPasswordForTesting',
+                address: '1 test street, test town, testingshire, TE57 1NG',
+                email_address: 'testEmail@testing.test'
+                  })
+              })
+
+        });
+    })
 });
 describe('/api/charities', () => {
     describe('GET', () => {
