@@ -8,7 +8,9 @@
     "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
     "prepare": "husky install",
-    "dev": "nodemon listen.js"
+    "dev": "nodemon listen.js",
+    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed",
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
