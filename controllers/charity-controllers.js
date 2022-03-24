@@ -1,4 +1,5 @@
-const { fetchCharities } = require('../models/charity-models')
+const { fetchCharities } = require('../models/charity-models');
+
 exports.getCharities = (req, res, next) => {
   fetchCharities()
     .then((charities) => {

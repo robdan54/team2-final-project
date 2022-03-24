@@ -1,7 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const { getDonors, sendDonor } = require('./controllers/donor-controllers');
-const {getCharities} = require('./controllers/charity-controllers')
+const { getCharities } = require('./controllers/charity-controllers');
 const { handlesCustomErrors, handlesPsqlErrors, handles500Errors } = require('./controllers/error-controller');
 
 const app = express();
