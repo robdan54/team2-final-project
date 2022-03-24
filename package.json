@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
     "prepare": "husky install"
   },
@@ -30,11 +31,13 @@
   },
   "dependencies": {
     "async": "^3.2.3",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "husky": "^7.0.4",
-    "mongoose": "^6.2.7",
-    "mongoose-sequence": "^5.3.1"
+    "jwtoken": "^0.0.0",
+    "pg": "^8.7.3",
+    "pg-format": "^1.0.4"
   }
 }
