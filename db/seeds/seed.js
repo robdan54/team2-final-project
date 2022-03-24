@@ -96,13 +96,6 @@ const seed = async ({
   const donationsPromise = db.query(insertDonationsQueryStr).then((result) => result.rows);
 
   await Promise.all([requestPromise, donationsPromise]);
-
-  db.query('SELECT * FROM categories').then((res) => { console.log(res.rows); });
-  db.query('SELECT * FROM charities_users').then((res) => { console.log(res.rows); });
-  db.query('SELECT * FROM donators_users').then((res) => { console.log(res.rows); });
-  db.query('SELECT * FROM items').then((res) => { console.log(res.rows); });
-  db.query('SELECT * FROM charity_reqs').then((res) => { console.log(res.rows); });
-  db.query('SELECT * FROM donator_items').then((res) => { console.log(res.rows); });
 };
 
 module.exports = seed;
