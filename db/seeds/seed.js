@@ -2,9 +2,7 @@
 
 const format = require('pg-format');
 
-const testData = require('../data/test-data')
-
-const {dropTables, createTables} = require('../helpers/manage-tables')
+const { dropTables, createTables } = require('../helpers/manage-tables');
 
 const db = require('../connection');
 
@@ -107,4 +105,4 @@ const seed = async ({
   db.query('SELECT * FROM donator_items').then((res) => { console.log(res.rows); });
 };
 
-seed(testData)
+module.exports = seed;

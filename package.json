@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "seed": "node ./db/seeds/run-seed.js",
     "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
     "prepare": "husky install"
