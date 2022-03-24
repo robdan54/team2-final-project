@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+/** @format */
+
+const { Pool } = require('pg');
 
 const ENV = process.env.NODE_ENV || 'development';
 
@@ -6,15 +8,17 @@ require('dotenv').config({
   path: `${__dirname}/../.env.${ENV}`,
 });
 
-mongoose.connect(
-  process.env.MONGODB,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    console.log('connected');
-  },
-);
+if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
+  throw new Error('PGDATABASE not set');
+}
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const config = ENV === 'production'
+  ? {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  }
+  : {};
 
-module.exports = db;
+module.exports = new Pool(config);
