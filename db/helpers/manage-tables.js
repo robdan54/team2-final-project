@@ -4,41 +4,41 @@ const createTables = async () => {
   const categoriesTablePromise = db.query(`
   CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
-    categoryName VARCHAR NOT NULL UNIQUE
+    category_name VARCHAR NOT NULL UNIQUE
   );`);
   const charityUsersTablePromise = db.query(`
   CREATE TABLE charities_users (
     charity_id SERIAL PRIMARY KEY,
-    charityName VARCHAR NOT NULL,
+    charity_name VARCHAR NOT NULL,
     address VARCHAR NOT NULL,
-    charityWebsite VARCHAR NOT NULL,
-    charityUsername VARCHAR NOT NULL,
+    charity_website VARCHAR NOT NULL,
+    charity_username VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
-    emailAddress VARCHAR NOT NULL
+    email_address VARCHAR NOT NULL
   );`);
   const donatorUsersTablePromise = db.query(`
   CREATE TABLE donators_users (
     donator_id SERIAL PRIMARY KEY,
     username VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
-    emailAddress VARCHAR NOT NULL,
+    email_address VARCHAR NOT NULL,
     address VARCHAR NOT NULL
   );`);
   await Promise.all([categoriesTablePromise, charityUsersTablePromise, donatorUsersTablePromise]);
   const itemsTablePromise = db.query(`
   CREATE TABLE items (
     item_id SERIAL PRIMARY KEY,
-    categoryName VARCHAR NOT NULL REFERENCES categories(categoryName),
-    itemName VARCHAR NOT NULL
+    category_name VARCHAR NOT NULL REFERENCES categories(category_name),
+    item_name VARCHAR NOT NULL
   );`);
   await Promise.all([itemsTablePromise]);
   await db.query(`
   CREATE TABLE charity_reqs (
     request_id SERIAL PRIMARY KEY,
     charity_id INT NOT NULL REFERENCES charities_users(charity_id),
-    categoryName VARCHAR NOT NULL REFERENCES categories(categoryName),
+    category_name VARCHAR NOT NULL REFERENCES categories(category_name),
     item_id INT NOT NULL REFERENCES items(item_id),
-    quantityRequired INT NOT NULL,
+    quantity_required INT NOT NULL,
     urgent BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT NOW()
   );`);
@@ -46,9 +46,9 @@ const createTables = async () => {
   CREATE TABLE donator_items (
     donation_id SERIAL PRIMARY KEY,
     donator_id INT NOT NULL REFERENCES donators_users(donator_id),
-    categoryName VARCHAR NOT NULL REFERENCES categories(categoryName),
+    category_name VARCHAR NOT NULL REFERENCES categories(category_name),
     item_id INT NOT NULL REFERENCES items(item_id),
-    quantityAvailable INT NOT NULL,
+    quantity_available INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
   )`);
 };

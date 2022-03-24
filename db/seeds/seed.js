@@ -18,7 +18,7 @@ const seed = async ({
   await createTables();
 
   const insertCategoryQueryStr = format(
-    'INSERT INTO categories (categoryName) VALUES %L RETURNING *;',
+    'INSERT INTO categories (category_name) VALUES %L RETURNING *;',
     categoriesData.map(({ categoryName }) => [categoryName]),
   );
 
@@ -27,7 +27,7 @@ const seed = async ({
     .then((result) => result.rows);
 
   const insertCharityQueryStr = format(
-    'INSERT INTO charities_users (charityName, address, charityWebsite, charityusername, password, emailAddress ) VALUES %L RETURNING *;',
+    'INSERT INTO charities_users (charity_name, address, charity_website, charity_username, password, email_address ) VALUES %L RETURNING *;',
     charityUsersData.map(
       ({
         charityName,
@@ -51,7 +51,7 @@ const seed = async ({
     .then((result) => result.row);
 
   const insertDonatorQueryStr = format(
-    'INSERT INTO donators_users (username, password, emailAddress, address) VALUES %L RETURNING *;',
+    'INSERT INTO donators_users (username, password, email_address, address) VALUES %L RETURNING *;',
     donatorUsersData.map(({
       username, password, emailAddress, address,
     }) => [
@@ -69,7 +69,7 @@ const seed = async ({
   await Promise.all([categoryPromise, charityPromise, donatorPromise]);
 
   const insertItemsQueryStr = format(
-    'INSERT INTO items (categoryName, itemName) VALUES %L RETURNING *;',
+    'INSERT INTO items (category_name, item_name) VALUES %L RETURNING *;',
     itemsData.map(({ categoryName, itemName }) => [categoryName, itemName]),
   );
 
@@ -78,7 +78,7 @@ const seed = async ({
   await Promise.all([itemPromise]);
 
   const insertRequestQueryStr = format(
-    'INSERT INTO charity_reqs (charity_id, categoryName, item_id, quantityRequired) VALUES %L RETURNING *;',
+    'INSERT INTO charity_reqs (charity_id, category_name, item_id, quantity_required) VALUES %L RETURNING *;',
     charityReqsData.map(({
       charity_id, categoryName, item_id, quantityRequired,
     }) => [charity_id, categoryName, item_id, quantityRequired]),
@@ -87,7 +87,7 @@ const seed = async ({
   const requestPromise = db.query(insertRequestQueryStr).then((result) => result.rows);
 
   const insertDonationsQueryStr = format(
-    'INSERT INTO donator_items (donator_id, categoryName, item_id, quantityAvailable) VALUES %L RETURNING *;',
+    'INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available) VALUES %L RETURNING *;',
     donatorItemsData.map(({
       donator_id, categoryName, item_id, quantityAvailable,
     }) => [donator_id, categoryName, item_id, quantityAvailable]),
