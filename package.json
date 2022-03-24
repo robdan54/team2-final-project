@@ -7,7 +7,8 @@
     "seed": "node ./db/seeds/run-seed.js",
     "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dev": "nodemon listen.js"
   },
   "repository": {
     "type": "git",
