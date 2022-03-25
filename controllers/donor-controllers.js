@@ -13,7 +13,6 @@ exports.getDonors = (req, res, next) => {
 exports.sendDonor = (req, res, next) => {
   const { body } = req;
   postDonor(body).then((donor) => {
-    console.log(donor);
     res.status(201).send({ donor });
   }).catch(next);
 };
