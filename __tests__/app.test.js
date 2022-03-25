@@ -4,7 +4,7 @@ const app = require('../app');
 const db = require('../db/connection');
 const seed = require('../db/seeds/seed');
 const testData = require('../db/data/test-data');
-// const { response } = require('../app')
+process.env.NODE_ENV = 'test';
 
 beforeEach(() => seed(testData));
 

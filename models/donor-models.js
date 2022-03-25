@@ -18,12 +18,13 @@ exports.postDonor = async (donor) => {
   return donorRow;
 };
 
-exports.verifyDonorInfo = async ({ username, password }) => {
-  const { rows: [validUser] } = await db.query(`
+exports.verifyDonorInfo = async ({username, password}) => {
+  const {rows: [validUser]} = await db.query(`
       SELECT donator_id, password FROM donators_users WHERE username = $1;
-  `, [username]);
+  `, [username])
 
-  const valid = await bcrypt.compare(password, validUser.password);
-
-  return { donator_id: validUser.donator_id, valid };
-};
+  const valid = await bcrypt.compare(password, validUser.password)  
+  
+  return {donator_id: validUser.donator_id, valid}
+ 
+} 
