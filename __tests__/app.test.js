@@ -37,9 +37,14 @@ describe('/api/donors', () => {
         email_address: 'testEmail@testing.test',
       };
 
-      return request(app).post('/api/donors').send(testUser).then(() => request(app).get('/api/donors').then((response) => {
-        expect(response.body.donors).toHaveLength(6);
-      }));
+      return request(app)
+        .post('/api/donors')
+        .send(testUser)
+        .then(() => request(app)
+          .get('/api/donors')
+          .then((response) => {
+            expect(response.body.donors).toHaveLength(6);
+          }));
     });
     test('status(201), should respond with the new user object', () => {
       const testUser = {
@@ -49,7 +54,10 @@ describe('/api/donors', () => {
         email_address: 'testEmail@testing.test',
       };
 
-      return request(app).post('/api/donors').send(testUser).expect(201)
+      return request(app)
+        .post('/api/donors')
+        .send(testUser)
+        .expect(201)
         .then(({ body: { donor } }) => {
           expect(donor).toEqual(
             expect.objectContaining({
@@ -59,7 +67,9 @@ describe('/api/donors', () => {
               email_address: 'testEmail@testing.test',
             }),
           );
-          expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(true);
+          expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(
+            true,
+          );
         });
     });
   });
@@ -93,36 +103,64 @@ describe('/api/charities', () => {
       password: 'TestPasswordForTesting',
       email_address: 'testEmail@testing.test',
     };
-    test('adds a charity to the database', () => request(app).post('/api/charities').send(testCharity).then(() => request(app).get('/api/charities').then((response) => {
-      expect(response.body.charities).toHaveLength(6);
-    })));
-    test('status(201), responds with the new charity object', () => request(app).post('/api/charities').send(testCharity).expect(201)
+    test('adds a charity to the database', () => request(app)
+      .post('/api/charities')
+      .send(testCharity)
+      .then(() => request(app)
+        .get('/api/charities')
+        .then((response) => {
+          expect(response.body.charities).toHaveLength(6);
+        })));
+    test('status(201), responds with the new charity object', () => request(app)
+      .post('/api/charities')
+      .send(testCharity)
+      .expect(201)
       .then(({ body: { charity } }) => {
-        expect(charity).toEqual(expect.objectContaining({
-          charity_id: 6,
-          charity_name: 'CharityTestName',
-          address: '1 test street, test town, testingshire, TE57 1NG',
-          charity_website: 'www.iamacharity.com',
-          charity_username: 'TestUserForTesting',
+        expect(charity).toEqual(
+          expect.objectContaining({
+            charity_id: 6,
+            charity_name: 'CharityTestName',
+            address: '1 test street, test town, testingshire, TE57 1NG',
+            charity_website: 'www.iamacharity.com',
+            charity_username: 'TestUserForTesting',
 
-          email_address: 'testEmail@testing.test',
-        }));
+            email_address: 'testEmail@testing.test',
+          }),
+        );
 
-        expect(bcrypt.compareSync(testCharity.password, charity.password)).toBe(true);
+        expect(
+          bcrypt.compareSync(testCharity.password, charity.password),
+        ).toBe(true);
       }));
   });
 });
 
 describe('/api/donors/signin', () => {
   describe('POST', () => {
-    test('should respond with a JSON webToken', () => request(app).post('/api/donors/signin').send({
-      username: 'TestUser1',
-      password: 'Testuserpassword1',
-    }).expect(202)
+    test('should respond with a JSON webToken', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        username: 'TestUser1',
+        password: 'Testuserpassword1',
+      })
+      .expect(202)
       .then(({ body }) => {
-        expect(body).toEqual(expect.objectContaining({
-          accessToken: expect.any(String),
-        }));
+        expect(body).toEqual(
+          expect.objectContaining({
+            accessToken: expect.any(String),
+          }),
+        );
+      }));
+    test('should not token with invalid passwords', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        username: 'TestUser1',
+        password: 'invalidpassword',
+      })
+      .expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid password' });
+        expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
       }));
   });
 });

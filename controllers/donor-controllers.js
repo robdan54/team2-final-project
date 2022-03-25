@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+
 const { fetchDonors, postDonor, verifyDonorInfo } = require('../models/donor-models');
 const config = require('../config/auth.config');
 
@@ -24,6 +25,6 @@ exports.signInDonor = (req, res, next) => {
     if (valid) {
       const token = jwt.sign({ donator_id }, config.secret, { expiresIn: 86400 }); // 24 hour token
       res.status(202).send({ donator_id, accessToken: token });
-    }
+    } else { res.status(401).send({ msg: 'invalid password' }); }
   }).catch(next);
 };
