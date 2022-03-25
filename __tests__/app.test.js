@@ -53,12 +53,13 @@ describe('/api/donors', () => {
         .then(({ body: { donor } }) => {
           expect(donor).toEqual(
             expect.objectContaining({
-            donator_id: 6,
-            username: 'TestUserForTesting',
-            address: '1 test street, test town, testingshire, TE57 1NG',
-            email_address: 'testEmail@testing.test',
-            }));
-            expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(true);
+              donator_id: 6,
+              username: 'TestUserForTesting',
+              address: '1 test street, test town, testingshire, TE57 1NG',
+              email_address: 'testEmail@testing.test',
+            }),
+          );
+          expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(true);
         });
     });
   });
@@ -108,7 +109,20 @@ describe('/api/charities', () => {
         }));
 
         expect(bcrypt.compareSync(testCharity.password, charity.password)).toBe(true);
+      }));
+  });
+});
 
+describe('/api/donors/signin', () => {
+  describe('POST', () => {
+    test('should respond with a JSON webToken', () => request(app).post('/api/donors/signin').send({
+      username: 'TestUser1',
+      password: 'Testuserpassword1',
+    }).expect(202)
+      .then(({ body }) => {
+        expect(body).toEqual(expect.objectContaining({
+          accessToken: expect.any(String),
+        }));
       }));
   });
 });
