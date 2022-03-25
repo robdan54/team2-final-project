@@ -17,3 +17,13 @@ exports.postCharity = async (charity) => {
           `, [charity_name, address, charity_website, charity_username, bcrypt.hashSync(password, 2), email_address]);
   return charityRow;
 };
+
+exports.verifyCharityInfo = async ({ username, password }) => {
+  const { rows: [validUser] } = await db.query(`
+      SELECT charity_id, password FROM charities_users WHERE username = $1;
+  `, [username]);
+
+  const valid = await bcrypt.compare(password, validUser.password);
+
+  return { charity_id: validUser.charity_id, valid };
+};

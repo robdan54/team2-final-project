@@ -1,7 +1,7 @@
 const cors = require('cors');
 const express = require('express');
 const { getDonors, sendDonor, signInDonor } = require('./controllers/donor-controllers');
-const { getCharities, sendCharity } = require('./controllers/charity-controllers');
+const { getCharities, sendCharity, signInCharity } = require('./controllers/charity-controllers');
 const { handlesCustomErrors, handlesPsqlErrors, handles500Errors } = require('./controllers/error-controller');
 const { getApi } = require('./controllers/api-controllers');
 
@@ -19,6 +19,7 @@ app.post('/api/donors/signin', signInDonor);
 
 app.get('/api/charities', getCharities);
 app.post('/api/charities', sendCharity);
+app.post('/api/charities/signin', signInCharity);
 
 app.all('/*', (req, res) => {
   res.status(404).send({ msg: 'Path not found' });

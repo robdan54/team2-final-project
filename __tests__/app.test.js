@@ -171,3 +171,15 @@ describe('/api/donors/signin', () => {
       }));
   });
 });
+
+describe('/api/charities/signin', () => {
+  describe('POST', () => {
+    test('should not be able to signin without a password and username', () => request(app)
+      .post('/api/charities/signin')
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'please provide a username and password' });
+      }));
+  });
+});
