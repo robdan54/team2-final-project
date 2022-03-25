@@ -1,5 +1,4 @@
 const request = require('supertest');
-const { any } = require('async');
 const app = require('../app');
 const db = require('../db/connection');
 const seed = require('../db/seeds/seed');

@@ -1,0 +1,51 @@
+{
+    "GET /api" : {
+        "description": "provides a json of all available endpoints of the api"
+    },
+
+    "GET /api/donors" : {
+        "description": "serves an array of all donor users including usernames and donator_ids. Other fields which could be sent back include email_address and address"
+    },
+
+    "POST /api/donors": {
+        "description": "returns the new donor user account that has been posted",
+        "exampleInput": {
+            "username": "TestUserForTesting",
+            "password": "TestPasswordForTesting",
+            "address": "1 test street, test town, testingshire, TE57 1NG",
+            "email_address": "testEmail@testing.test"
+        },
+        "exampleResponse": {
+            "donator_id": 6,
+            "username": "TestUserForTesting",
+            "password": "TestPasswordForTesting",
+            "address": "1 test street, test town, testingshire, TE57 1NG",
+            "email_address": "testEmail@testing.test"
+        }
+    },
+
+    "GET /api/charities" : {
+        "description": "serves an array of all charity users including charity_id, charity_name, address, charity_website and email_address"
+    },
+
+    "POST /api/charities": {
+        "description": "returns the new charity user account that has been posted",
+        "exampleInput": {
+            "charity_name": "CharityTestName",
+            "address": "1 test street, test town, testingshire, TE57 1NG",
+            "charity_website": "www.iamacharity.com",
+            "charity_username": "TestUserForTesting",
+            "password": "TestPasswordForTesting",
+            "email_address": "testEmail@testing.test"
+        },
+        "exampleResponse": {
+            "charity_id": 6,
+            "charity_name": "CharityTestName",
+            "address": "1 test street, test town, testingshire, TE57 1NG",
+            "charity_website": "www.iamacharity.com",
+            "charity_username": "TestUserForTesting",
+            "password": "TestPasswordForTesting",
+            "email_address": "testEmail@testing.test"
+        }
+    }
+}
