@@ -6,6 +6,8 @@ const { dropTables, createTables } = require('../helpers/manage-tables');
 
 const db = require('../connection');
 
+const bcrypt = require('bcrypt')
+
 const seed = async ({
   categoriesData,
   charityUsersData,
@@ -41,7 +43,7 @@ const seed = async ({
         address,
         charityWebsite,
         charityusername,
-        password,
+        bcrypt.hashSync(password, 10),
         emailAddress,
       ],
     ),

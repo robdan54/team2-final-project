@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const bcrypt = require('bcrypt')
 
 exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address FROM charities_users;').then((result) => result.rows);
 
@@ -13,6 +14,6 @@ exports.postCharity = async (charity) => {
               ($1, $2, $3, $4, $5, $6)
   
           RETURNING *;
-          `, [charity_name, address, charity_website, charity_username, password, email_address]);
+          `, [charity_name, address, charity_website, charity_username, bcrypt.hashSync(password, 10), email_address]);
   return charityRow;
 };

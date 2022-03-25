@@ -3,6 +3,7 @@ const app = require('../app');
 const db = require('../db/connection');
 const seed = require('../db/seeds/seed');
 const testData = require('../db/data/test-data');
+const bcrypt = require('bcrypt')
 // const { response } = require('../app')
 
 beforeEach(() => seed(testData));
@@ -95,15 +96,19 @@ describe('/api/charities', () => {
     })));
     test('status(201), responds with the new charity object', () => request(app).post('/api/charities').send(testCharity).expect(201)
       .then(({ body: { charity } }) => {
-        expect(charity).toEqual({
+        expect(charity).toEqual(expect.objectContaining({
           charity_id: 6,
           charity_name: 'CharityTestName',
           address: '1 test street, test town, testingshire, TE57 1NG',
           charity_website: 'www.iamacharity.com',
           charity_username: 'TestUserForTesting',
-          password: 'TestPasswordForTesting',
+          
           email_address: 'testEmail@testing.test',
-        });
+        }));
+        console.log(testCharity.password)
+        
+        expect(bcrypt.compareSync(testCharity.password, charity.password)).toBe(true)
+       
       }));
   });
 });
