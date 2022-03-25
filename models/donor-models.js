@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const bcrypt = require('bcrypt')
 
 exports.fetchDonors = () => db.query('SELECT username, donator_id FROM donators_users;').then((result) => result.rows);
 
@@ -13,6 +14,6 @@ exports.postDonor = async (donor) => {
             ($1, $2, $3, $4)
 
         RETURNING *;
-        `, [username, password, email_address, address]);
+        `, [username, bcrypt.hashSync(password, 2), email_address, address]);
   return donorRow;
 };

@@ -2,11 +2,10 @@
 
 const format = require('pg-format');
 
+const bcrypt = require('bcrypt');
 const { dropTables, createTables } = require('../helpers/manage-tables');
 
 const db = require('../connection');
-
-const bcrypt = require('bcrypt')
 
 const seed = async ({
   categoriesData,
@@ -43,7 +42,7 @@ const seed = async ({
         address,
         charityWebsite,
         charityusername,
-        bcrypt.hashSync(password, 10),
+        bcrypt.hashSync(password, 2),
         emailAddress,
       ],
     ),
@@ -58,7 +57,7 @@ const seed = async ({
       username, password, emailAddress, address,
     }) => [
       username,
-      password,
+      bcrypt.hashSync(password, 2),
       emailAddress,
       address,
     ]),

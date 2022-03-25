@@ -1,9 +1,9 @@
 const request = require('supertest');
+const bcrypt = require('bcrypt');
 const app = require('../app');
 const db = require('../db/connection');
 const seed = require('../db/seeds/seed');
 const testData = require('../db/data/test-data');
-const bcrypt = require('bcrypt')
 // const { response } = require('../app')
 
 beforeEach(() => seed(testData));
@@ -51,13 +51,14 @@ describe('/api/donors', () => {
 
       return request(app).post('/api/donors').send(testUser).expect(201)
         .then(({ body: { donor } }) => {
-          expect(donor).toEqual({
+          expect(donor).toEqual(
+            expect.objectContaining({
             donator_id: 6,
             username: 'TestUserForTesting',
-            password: 'TestPasswordForTesting',
             address: '1 test street, test town, testingshire, TE57 1NG',
             email_address: 'testEmail@testing.test',
-          });
+            }));
+            expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(true);
         });
     });
   });
@@ -102,13 +103,12 @@ describe('/api/charities', () => {
           address: '1 test street, test town, testingshire, TE57 1NG',
           charity_website: 'www.iamacharity.com',
           charity_username: 'TestUserForTesting',
-          
+
           email_address: 'testEmail@testing.test',
         }));
-        console.log(testCharity.password)
-        
-        expect(bcrypt.compareSync(testCharity.password, charity.password)).toBe(true)
-       
+
+        expect(bcrypt.compareSync(testCharity.password, charity.password)).toBe(true);
+
       }));
   });
 });
