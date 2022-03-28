@@ -177,7 +177,9 @@ describe('/api/donors/signin', () => {
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: 'please provide a username and password' });
+        expect(body).toEqual({
+          msg: 'please provide a username and password',
+        });
       }));
     test('should respond with a JSON webToken', () => request(app)
       .post('/api/donors/signin')
@@ -202,7 +204,9 @@ describe('/api/donors/signin', () => {
       .expect(401)
       .then(({ body }) => {
         expect(body).toEqual({ msg: 'invalid password' });
-        expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
+        expect(body).toEqual(
+          expect.not.objectContaining({ accessToken: expect.any(String) }),
+        );
       }));
     test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
       email_address: 'not an email address',
@@ -257,3 +261,36 @@ describe('/api/charities/signin', () => {
       }));
   });
 });
+
+// Charity Id requirements
+describe('/api/:charity_id/requirements', () => {
+  describe.only('GET', () => {
+    test('Status (200), responds with an array of charity requirements', () => request(app)
+      .get('/api/4/requirements')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.charityRequirements).toBeInstanceOf(Array);
+        expect(response.body.charityRequirements).toEqual([{
+          category_name: 'food',
+          charity_id: 4,
+          created_at: expect.any(String),
+          item_id: 2,
+          quantity_required: 200,
+          request_id: 6,
+          urgent: false,
+        }]);
+      }));
+  });
+});
+
+// response.body.charityRequirements.forEach((requirement) => {
+//   expect(requirement).toEqual(
+//     expect.objectContaining({
+//       charity_id: 4,
+//       category_name: 'food',
+//       item_id: 2,
+//       item_name: 'soup',
+//       quantity_required: 200,
+//     }),
+//   );
+// });
