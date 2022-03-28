@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 const { fetchCharities, postCharity, verifyCharityInfo } = require('../models/charity-models');
 
+// handles the get charities endpoint
+
 exports.getCharities = (req, res, next) => {
   fetchCharities()
     .then((charities) => {
@@ -12,6 +14,8 @@ exports.getCharities = (req, res, next) => {
     });
 };
 
+// handles the send charity endpoint
+
 exports.sendCharity = (req, res, next) => {
   const { body } = req;
   postCharity(body).then((charity) => {
@@ -19,8 +23,10 @@ exports.sendCharity = (req, res, next) => {
   }).catch(next);
 };
 
+// handles the sign-in endpoint
+
 exports.signInCharity = (req, res, next) => {
-  if (!req.body.username && !req.body.password) res.status(400).send({ msg: 'please provide a username and password' });
+  if (!req.body.email_address && !req.body.password) res.status(400).send({ msg: 'please provide an email address and password' });
   verifyCharityInfo(req.body).then(({ charity_id, valid }) => {
     if (valid) {
       const token = jwt.sign({ charity_id }, config.secret, { expiresIn: 86400 }); // 24 hour token

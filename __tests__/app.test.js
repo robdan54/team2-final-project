@@ -4,7 +4,8 @@ const app = require('../app');
 const db = require('../db/connection');
 const seed = require('../db/seeds/seed');
 const testData = require('../db/data/test-data');
-// const { response } = require('../app')
+
+process.env.NODE_ENV = 'test';
 
 beforeEach(() => seed(testData));
 
@@ -149,7 +150,7 @@ describe('/api/donors/signin', () => {
     test('should respond with a JSON webToken', () => request(app)
       .post('/api/donors/signin')
       .send({
-        username: 'TestUser1',
+        email_address: 'testemail1',
         password: 'Testuserpassword1',
       })
       .expect(202)
@@ -163,13 +164,20 @@ describe('/api/donors/signin', () => {
     test('should not token with invalid passwords', () => request(app)
       .post('/api/donors/signin')
       .send({
-        username: 'TestUser1',
+        email_address: 'testemail1',
         password: 'invalidpassword',
       })
       .expect(401)
       .then(({ body }) => {
         expect(body).toEqual({ msg: 'invalid password' });
         expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
+      }));
+    test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
+      email_address: 'not an email address',
+      password: 'Testuserpassword1',
+    }).expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid username' });
       }));
   });
 });
@@ -181,7 +189,39 @@ describe('/api/charities/signin', () => {
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: 'please provide a username and password' });
+        expect(body).toEqual({ msg: 'please provide an email address and password' });
+      }));
+    test('should respond with a JSON webToken', () => request(app)
+      .post('/api/charities/signin')
+      .send({
+        email_address: 'testEmail1',
+        password: 'TestCharityPassword1',
+      })
+      .expect(202)
+      .then(({ body }) => {
+        expect(body).toEqual(
+          expect.objectContaining({
+            accessToken: expect.any(String),
+          }),
+        );
+      }));
+    test('should not token with invalid passwords', () => request(app)
+      .post('/api/charities/signin')
+      .send({
+        email_address: 'testEmail1',
+        password: 'invalidpassword',
+      })
+      .expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid password' });
+        expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
+      }));
+    test('should respond with a message when the username is incorrect', () => request(app).post('/api/charities/signin').send({
+      email_address: 'not-an-email',
+      password: 'TestCharityPassword1',
+    }).expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid username' });
       }));
   });
 });
