@@ -27,7 +27,7 @@ exports.sendDonor = (req, res, next) => {
 // handles the sign in donor endpoint
 
 exports.signInDonor = (req, res, next) => {
-  if (!req.body.username && !req.body.password) res.status(400).send({ msg: 'please provide a username and password' });
+  if (!req.body.email_address && !req.body.password) res.status(400).send({ msg: 'please provide a username and password' });
   verifyDonorInfo(req.body).then(({ donator_id, valid }) => {
     if (valid) {
       const token = jwt.sign({ donator_id }, config.secret, { expiresIn: 86400 }); // 24 hour token

@@ -24,10 +24,10 @@ exports.postDonor = async (donor) => {
 
 // checks if the username and password given matches those stored and gives an authorization token
 
-exports.verifyDonorInfo = async ({ username, password }) => {
+exports.verifyDonorInfo = async ({ email_address, password }) => {
   const { rows: [validUser] } = await db.query(`
-      SELECT donator_id, password FROM donators_users WHERE username = $1;
-  `, [username]);
+      SELECT donator_id, password FROM donators_users WHERE email_address = $1;
+  `, [email_address]);
 
   // eslint-disable-next-line prefer-promise-reject-errors
   if (!validUser) return Promise.reject({ status: 400, msg: 'invalid username' });

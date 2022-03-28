@@ -148,7 +148,7 @@ describe('/api/donors/signin', () => {
     test('should respond with a JSON webToken', () => request(app)
       .post('/api/donors/signin')
       .send({
-        username: 'TestUser1',
+        email_address: 'testemail1',
         password: 'Testuserpassword1',
       })
       .expect(202)
@@ -162,7 +162,7 @@ describe('/api/donors/signin', () => {
     test('should not token with invalid passwords', () => request(app)
       .post('/api/donors/signin')
       .send({
-        username: 'TestUser1',
+        email_address: 'testemail1',
         password: 'invalidpassword',
       })
       .expect(401)
@@ -170,8 +170,8 @@ describe('/api/donors/signin', () => {
         expect(body).toEqual({ msg: 'invalid password' });
         expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
       }));
-    test('should respond with a message when the username is incorrect', () => request(app).post('/api/donors/signin').send({
-      username: 'ThisIsNotAUserName',
+    test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
+      email_address: 'not an email address',
       password: 'Testuserpassword1',
     }).expect(400)
       .then(({ body }) => {
