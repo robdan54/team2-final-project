@@ -1,9 +1,8 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 
-// returns a list of all charities
 
-exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address FROM charities_users;').then((result) => result.rows);
+exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng FROM charities_users;').then((result) => result.rows);
 
 // posts a new charity with an encrypted password
 

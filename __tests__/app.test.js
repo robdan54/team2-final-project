@@ -90,6 +90,8 @@ describe('/api/charities', () => {
               address: expect.any(String),
               charity_website: expect.any(String),
               email_address: expect.any(String),
+              lat: expect.any(Number),
+              lng: expect.any(Number),
             }),
           );
         });
