@@ -264,7 +264,7 @@ describe('/api/charities/signin', () => {
 
 // Charity Id requirements
 describe('/api/:charity_id/requirements', () => {
-  describe.only('GET', () => {
+  describe('GET', () => {
     test('Status (200), responds with an array of charity requirements', () => request(app)
       .get('/api/4/requirements')
       .expect(200)
