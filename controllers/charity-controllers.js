@@ -5,8 +5,8 @@ const { fetchCharities, postCharity, verifyCharityInfo } = require('../models/ch
 // handles the get charities endpoint
 
 exports.getCharities = (req, res, next) => {
-  const { lat, lng } = req.query;
-  fetchCharities(lat, lng)
+  const { lat, lng, range } = req.query;
+  fetchCharities(lat, lng, range)
     .then((charities) => {
       res.status(200).send({ charities });
     })

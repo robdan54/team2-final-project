@@ -115,6 +115,20 @@ describe('/api/charities', () => {
           );
         });
       }));
+    test('by default, results should be ordered by distance ascending', () => request(app)
+      .get('/api/charities')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.charities).toBeSortedBy('distance', { ascending: true });
+      }));
+    test('results should be limited to a particular distance from original location', () => request(app)
+      .get('/api/charities?range=1000')
+      .expect(200)
+      .then((response) => {
+        response.body.charities.forEach((charity) => {
+          expect(charity.distance).toBeLessThan(1001);
+        });
+      }));
   });
   describe('POST', () => {
     const testCharity = {
