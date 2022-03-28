@@ -1,11 +1,17 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
-const { fetchCharities, postCharity, verifyCharityInfo } = require('../models/charity-models');
+const {
+  fetchCharities,
+  postCharity,
+  verifyCharityInfo,
+  fetchCharityRequirements,
+} = require('../models/charity-models');
 
 // handles the get charities endpoint
 
 exports.getCharities = (req, res, next) => {
-  fetchCharities()
+  const { lat, lng, range } = req.query;
+  fetchCharities(lat, lng, range)
     .then((charities) => {
       res.status(200).send({ charities });
     })
@@ -18,9 +24,11 @@ exports.getCharities = (req, res, next) => {
 
 exports.sendCharity = (req, res, next) => {
   const { body } = req;
-  postCharity(body).then((charity) => {
-    res.status(201).send({ charity });
-  }).catch(next);
+  postCharity(body)
+    .then((charity) => {
+      res.status(201).send({ charity });
+    })
+    .catch(next);
 };
 
 // handles the sign-in endpoint
@@ -34,3 +42,17 @@ exports.signInCharity = (req, res, next) => {
     } else { res.status(401).send({ msg: 'invalid password' }); }
   }).catch(next);
 };
+
+
+
+exports.getCharityRequirements = (req, res, next) => {
+  const { charity_id } = req.params;
+
+  fetchCharityRequirements(charity_id)
+    .then((charityRequirements) => {
+      res.status(200).send({ charityRequirements });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}

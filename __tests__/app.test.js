@@ -115,6 +115,39 @@ describe('/api/charities', () => {
           );
         });
       }));
+    test('lat/lng queries should work and return an array of charities', () => request(app)
+      .get('/api/charities?lat=53.70754277823678&lng=-1.6484416213022532')
+      .expect(200)
+      .then((response) => {
+        response.body.charities.forEach((charity) => {
+          expect(charity).toEqual(
+            expect.objectContaining({
+              charity_id: expect.any(Number),
+              charity_name: expect.any(String),
+              address: expect.any(String),
+              charity_website: expect.any(String),
+              email_address: expect.any(String),
+              lat: expect.any(Number),
+              lng: expect.any(Number),
+              distance: expect.any(Number),
+            }),
+          );
+        });
+      }));
+    test('by default, results should be ordered by distance ascending', () => request(app)
+      .get('/api/charities')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.charities).toBeSortedBy('distance', { ascending: true });
+      }));
+    test('results should be limited to a particular distance from original location', () => request(app)
+      .get('/api/charities?range=1000')
+      .expect(200)
+      .then((response) => {
+        response.body.charities.forEach((charity) => {
+          expect(charity.distance).toBeLessThan(1001);
+        });
+      }));
   });
   describe('POST', () => {
     const testCharity = {
@@ -123,6 +156,8 @@ describe('/api/charities', () => {
       charity_website: 'www.iamacharity.com',
       password: 'TestPasswordForTesting',
       email_address: 'testEmail@testing.test',
+      lat: 53.793741,
+      lng: -1.586513,
     };
     test('adds a charity to the database', () => request(app)
       .post('/api/charities')
@@ -161,7 +196,9 @@ describe('/api/donors/signin', () => {
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body).toEqual({ msg: 'please provide a username and password' });
+        expect(body).toEqual({
+          msg: 'please provide a username and password',
+        });
       }));
     test('should respond with a JSON webToken', () => request(app)
       .post('/api/donors/signin')
@@ -186,7 +223,9 @@ describe('/api/donors/signin', () => {
       .expect(401)
       .then(({ body }) => {
         expect(body).toEqual({ msg: 'invalid password' });
-        expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
+        expect(body).toEqual(
+          expect.not.objectContaining({ accessToken: expect.any(String) }),
+        );
       }));
     test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
       email_address: 'not an email address',
@@ -241,3 +280,36 @@ describe('/api/charities/signin', () => {
       }));
   });
 });
+
+// Charity Id requirements
+describe('/api/:charity_id/requirements', () => {
+  describe('GET', () => {
+    test('Status (200), responds with an array of charity requirements', () => request(app)
+      .get('/api/4/requirements')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.charityRequirements).toBeInstanceOf(Array);
+        expect(response.body.charityRequirements).toEqual([{
+          category_name: 'food',
+          charity_id: 4,
+          created_at: expect.any(String),
+          item_id: 2,
+          quantity_required: 200,
+          request_id: 6,
+          urgent: false,
+        }]);
+      }));
+  });
+});
+
+// response.body.charityRequirements.forEach((requirement) => {
+//   expect(requirement).toEqual(
+//     expect.objectContaining({
+//       charity_id: 4,
+//       category_name: 'food',
+//       item_id: 2,
+//       item_name: 'soup',
+//       quantity_required: 200,
+//     }),
+//   );
+// });
