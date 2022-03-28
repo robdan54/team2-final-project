@@ -5,6 +5,7 @@ const { fetchCharities, postCharity, verifyCharityInfo } = require('../models/ch
 exports.getCharities = (req, res, next) => {
   fetchCharities()
     .then((charities) => {
+      console.log(charities);
       res.status(200).send({ charities });
     })
     .catch((err) => {

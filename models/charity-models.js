@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 
-exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng FROM charities_users;').then((result) => result.rows);
+exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng, ROUND (( 6371000 * acos( cos( radians(lat) ) * cos( radians( 53.80754277823678 ) ) * cos( radians(-1.5484416213022532) - radians(lng) ) + sin( radians(lat) ) * sin( radians(53.80754277823678))))) AS distance FROM charities_users;').then((result) => result.rows);
 
 exports.postCharity = async (charity) => {
   const {
