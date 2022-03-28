@@ -121,7 +121,6 @@ describe('/api/charities', () => {
       charity_name: 'CharityTestName',
       address: '1 test street, test town, testingshire, TE57 1NG',
       charity_website: 'www.iamacharity.com',
-      charity_username: 'TestUserForTesting',
       password: 'TestPasswordForTesting',
       email_address: 'testEmail@testing.test',
       lat: 53.793741,
@@ -146,7 +145,6 @@ describe('/api/charities', () => {
             charity_name: 'CharityTestName',
             address: '1 test street, test town, testingshire, TE57 1NG',
             charity_website: 'www.iamacharity.com',
-            charity_username: 'TestUserForTesting',
             email_address: 'testEmail@testing.test',
           }),
         );

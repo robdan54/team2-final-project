@@ -11,12 +11,12 @@ exports.postCharity = async (charity) => {
   } = charity;
 
   const { rows: [charityRow] } = await db.query(`INSERT INTO charities_users
-              (charity_name, address, charity_website, charity_username, password, email_address, lat, lng)
+              (charity_name, address, charity_website, password, email_address, lat, lng)
           VALUES
-              ($1, $2, $3, $4, $5, $6, $7, $8)
+              ($1, $2, $3, $4, $5, $6, $7)
   
           RETURNING *;
-          `, [charity_name, address, charity_website, charity_username, bcrypt.hashSync(password, 2), email_address, lat, lng]);
+          `, [charity_name, address, charity_website, bcrypt.hashSync(password, 2), email_address, lat, lng]);
   return charityRow;
 };
 
