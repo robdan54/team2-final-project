@@ -8,13 +8,6 @@ exports.getCharities = (req, res, next) => {
   const { lat, lng, range } = req.query;
   fetchCharities(lat, lng, range)
     .then((charities) => {
-      console.log(charities);
-      console.log(range);
-      // if (range) {
-      //   charities.map((charity) {
-      //     if (charity.distance < range) return charity;
-      //   });
-      // }
       res.status(200).send({ charities });
     })
     .catch((err) => {

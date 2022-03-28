@@ -126,7 +126,6 @@ describe('/api/charities', () => {
       .expect(200)
       .then((response) => {
         response.body.charities.forEach((charity) => {
-          console.log(charity);
           expect(charity.distance).toBeLessThan(1001);
         });
       }));
