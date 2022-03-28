@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 
-//  returns charity users info
-
 exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng FROM charities_users;').then((result) => result.rows);
 
 exports.postCharity = async (charity) => {
