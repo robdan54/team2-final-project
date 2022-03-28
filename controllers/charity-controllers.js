@@ -26,7 +26,7 @@ exports.sendCharity = (req, res, next) => {
 // handles the sign-in endpoint
 
 exports.signInCharity = (req, res, next) => {
-  if (!req.body.username && !req.body.password) res.status(400).send({ msg: 'please provide a username and password' });
+  if (!req.body.email_address && !req.body.password) res.status(400).send({ msg: 'please provide an email address and password' });
   verifyCharityInfo(req.body).then(({ charity_id, valid }) => {
     if (valid) {
       const token = jwt.sign({ charity_id }, config.secret, { expiresIn: 86400 }); // 24 hour token

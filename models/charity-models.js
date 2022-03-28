@@ -24,10 +24,13 @@ exports.postCharity = async (charity) => {
 
 // checks if a username and password matches that of the database
 
-exports.verifyCharityInfo = async ({ username, password }) => {
+exports.verifyCharityInfo = async ({ email_address, password }) => {
   const { rows: [validUser] } = await db.query(`
-      SELECT charity_id, password FROM charities_users WHERE username = $1;
-  `, [username]);
+      SELECT charity_id, password FROM charities_users WHERE email_address = $1;
+  `, [email_address]);
+
+  // eslint-disable-next-line prefer-promise-reject-errors
+  if (!validUser) return Promise.reject({ status: 400, msg: 'invalid username' });
 
   const valid = await bcrypt.compare(password, validUser.password);
 

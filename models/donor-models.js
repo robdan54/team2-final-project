@@ -29,6 +29,9 @@ exports.verifyDonorInfo = async ({ username, password }) => {
       SELECT donator_id, password FROM donators_users WHERE username = $1;
   `, [username]);
 
+  // eslint-disable-next-line prefer-promise-reject-errors
+  if (!validUser) return Promise.reject({ status: 400, msg: 'invalid username' });
+
   const valid = await bcrypt.compare(password, validUser.password);
 
   return { donator_id: validUser.donator_id, valid };
