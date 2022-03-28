@@ -3,9 +3,9 @@ const config = require('../config/auth.config');
 const { fetchCharities, postCharity, verifyCharityInfo } = require('../models/charity-models');
 
 exports.getCharities = (req, res, next) => {
-  fetchCharities()
+  const { lat, lng } = req.query;
+  fetchCharities(lat, lng)
     .then((charities) => {
-      console.log(charities);
       res.status(200).send({ charities });
     })
     .catch((err) => {
