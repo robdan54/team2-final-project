@@ -28,7 +28,7 @@ const seed = async ({
     .then((result) => result.rows);
 
   const insertCharityQueryStr = format(
-    'INSERT INTO charities_users (charity_name, address, charity_website, charity_username, password, email_address ) VALUES %L RETURNING *;',
+    'INSERT INTO charities_users (charity_name, address, charity_website, charity_username, password, email_address, lat, lng) VALUES %L RETURNING *;',
     charityUsersData.map(
       ({
         charityName,
@@ -37,6 +37,8 @@ const seed = async ({
         charityusername,
         password,
         emailAddress,
+        lat,
+        lng,
       }) => [
         charityName,
         address,
@@ -44,6 +46,8 @@ const seed = async ({
         charityusername,
         bcrypt.hashSync(password, 2),
         emailAddress,
+        lat,
+        lng,
       ],
     ),
   );
