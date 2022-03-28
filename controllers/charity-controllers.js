@@ -43,8 +43,6 @@ exports.signInCharity = (req, res, next) => {
   }).catch(next);
 };
 
-
-
 exports.getCharityRequirements = (req, res, next) => {
   const { charity_id } = req.params;
 
@@ -55,4 +53,4 @@ exports.getCharityRequirements = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-}
+};
