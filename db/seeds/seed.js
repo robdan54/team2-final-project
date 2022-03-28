@@ -2,6 +2,7 @@
 
 const format = require('pg-format');
 
+const bcrypt = require('bcrypt');
 const { dropTables, createTables } = require('../helpers/manage-tables');
 
 const db = require('../connection');
@@ -27,7 +28,7 @@ const seed = async ({
     .then((result) => result.rows);
 
   const insertCharityQueryStr = format(
-    'INSERT INTO charities_users (charity_name, address, charity_website, charity_username, password, email_address ) VALUES %L RETURNING *;',
+    'INSERT INTO charities_users (charity_name, address, charity_website, charity_username, password, email_address, lat, lng) VALUES %L RETURNING *;',
     charityUsersData.map(
       ({
         charityName,
@@ -36,13 +37,17 @@ const seed = async ({
         charityusername,
         password,
         emailAddress,
+        lat,
+        lng,
       }) => [
         charityName,
         address,
         charityWebsite,
         charityusername,
-        password,
+        bcrypt.hashSync(password, 2),
         emailAddress,
+        lat,
+        lng,
       ],
     ),
   );
@@ -56,7 +61,7 @@ const seed = async ({
       username, password, emailAddress, address,
     }) => [
       username,
-      password,
+      bcrypt.hashSync(password, 2),
       emailAddress,
       address,
     ]),

@@ -1,9 +1,11 @@
 const request = require('supertest');
+const bcrypt = require('bcrypt');
 const app = require('../app');
 const db = require('../db/connection');
 const seed = require('../db/seeds/seed');
 const testData = require('../db/data/test-data');
-// const { response } = require('../app')
+
+process.env.NODE_ENV = 'test';
 
 beforeEach(() => seed(testData));
 
@@ -36,9 +38,14 @@ describe('/api/donors', () => {
         email_address: 'testEmail@testing.test',
       };
 
-      return request(app).post('/api/donors').send(testUser).then(() => request(app).get('/api/donors').then((response) => {
-        expect(response.body.donors).toHaveLength(6);
-      }));
+      return request(app)
+        .post('/api/donors')
+        .send(testUser)
+        .then(() => request(app)
+          .get('/api/donors')
+          .then((response) => {
+            expect(response.body.donors).toHaveLength(6);
+          }));
     });
     test('status(201), should respond with the new user object', () => {
       const testUser = {
@@ -48,15 +55,22 @@ describe('/api/donors', () => {
         email_address: 'testEmail@testing.test',
       };
 
-      return request(app).post('/api/donors').send(testUser).expect(201)
+      return request(app)
+        .post('/api/donors')
+        .send(testUser)
+        .expect(201)
         .then(({ body: { donor } }) => {
-          expect(donor).toEqual({
-            donator_id: 6,
-            username: 'TestUserForTesting',
-            password: 'TestPasswordForTesting',
-            address: '1 test street, test town, testingshire, TE57 1NG',
-            email_address: 'testEmail@testing.test',
-          });
+          expect(donor).toEqual(
+            expect.objectContaining({
+              donator_id: 6,
+              username: 'TestUserForTesting',
+              address: '1 test street, test town, testingshire, TE57 1NG',
+              email_address: 'testEmail@testing.test',
+            }),
+          );
+          expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(
+            true,
+          );
         });
     });
   });
@@ -76,6 +90,8 @@ describe('/api/charities', () => {
               address: expect.any(String),
               charity_website: expect.any(String),
               email_address: expect.any(String),
+              lat: expect.any(Number),
+              lng: expect.any(Number),
             }),
           );
         });
@@ -90,20 +106,122 @@ describe('/api/charities', () => {
       password: 'TestPasswordForTesting',
       email_address: 'testEmail@testing.test',
     };
-    test('adds a charity to the database', () => request(app).post('/api/charities').send(testCharity).then(() => request(app).get('/api/charities').then((response) => {
-      expect(response.body.charities).toHaveLength(6);
-    })));
-    test('status(201), responds with the new charity object', () => request(app).post('/api/charities').send(testCharity).expect(201)
+    test('adds a charity to the database', () => request(app)
+      .post('/api/charities')
+      .send(testCharity)
+      .then(() => request(app)
+        .get('/api/charities')
+        .then((response) => {
+          expect(response.body.charities).toHaveLength(6);
+        })));
+    test('status(201), responds with the new charity object', () => request(app)
+      .post('/api/charities')
+      .send(testCharity)
+      .expect(201)
       .then(({ body: { charity } }) => {
-        expect(charity).toEqual({
-          charity_id: 6,
-          charity_name: 'CharityTestName',
-          address: '1 test street, test town, testingshire, TE57 1NG',
-          charity_website: 'www.iamacharity.com',
-          charity_username: 'TestUserForTesting',
-          password: 'TestPasswordForTesting',
-          email_address: 'testEmail@testing.test',
-        });
+        expect(charity).toEqual(
+          expect.objectContaining({
+            charity_id: 6,
+            charity_name: 'CharityTestName',
+            address: '1 test street, test town, testingshire, TE57 1NG',
+            charity_website: 'www.iamacharity.com',
+            charity_username: 'TestUserForTesting',
+
+            email_address: 'testEmail@testing.test',
+          }),
+        );
+
+        expect(
+          bcrypt.compareSync(testCharity.password, charity.password),
+        ).toBe(true);
+      }));
+  });
+});
+
+describe('/api/donors/signin', () => {
+  describe('POST', () => {
+    test('should not be able to signin without a password and username', () => request(app)
+      .post('/api/donors/signin')
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'please provide a username and password' });
+      }));
+    test('should respond with a JSON webToken', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'Testuserpassword1',
+      })
+      .expect(202)
+      .then(({ body }) => {
+        expect(body).toEqual(
+          expect.objectContaining({
+            accessToken: expect.any(String),
+          }),
+        );
+      }));
+    test('should not token with invalid passwords', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'invalidpassword',
+      })
+      .expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid password' });
+        expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
+      }));
+    test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
+      email_address: 'not an email address',
+      password: 'Testuserpassword1',
+    }).expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid username' });
+      }));
+  });
+});
+
+describe('/api/charities/signin', () => {
+  describe('POST', () => {
+    test('should not be able to signin without a password and username', () => request(app)
+      .post('/api/charities/signin')
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'please provide an email address and password' });
+      }));
+    test('should respond with a JSON webToken', () => request(app)
+      .post('/api/charities/signin')
+      .send({
+        email_address: 'testEmail1',
+        password: 'TestCharityPassword1',
+      })
+      .expect(202)
+      .then(({ body }) => {
+        expect(body).toEqual(
+          expect.objectContaining({
+            accessToken: expect.any(String),
+          }),
+        );
+      }));
+    test('should not token with invalid passwords', () => request(app)
+      .post('/api/charities/signin')
+      .send({
+        email_address: 'testEmail1',
+        password: 'invalidpassword',
+      })
+      .expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid password' });
+        expect(body).toEqual(expect.not.objectContaining({ accessToken: expect.any(String) }));
+      }));
+    test('should respond with a message when the username is incorrect', () => request(app).post('/api/charities/signin').send({
+      email_address: 'not-an-email',
+      password: 'TestCharityPassword1',
+    }).expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid username' });
       }));
   });
 });
