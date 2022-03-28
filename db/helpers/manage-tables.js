@@ -12,7 +12,6 @@ const createTables = async () => {
     charity_name VARCHAR NOT NULL,
     address VARCHAR NOT NULL,
     charity_website VARCHAR NOT NULL,
-    charity_username VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     email_address VARCHAR NOT NULL,
     lat DOUBLE PRECISION,
