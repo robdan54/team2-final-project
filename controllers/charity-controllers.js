@@ -27,8 +27,7 @@ exports.sendCharity = (req, res, next) => {
 };
 
 exports.signInCharity = (req, res, next) => {
-  if (!req.body.username && !req.body.password)
-    res.status(400).send({ msg: 'please provide a username and password' });
+  if (!req.body.username && !req.body.password) { res.status(400).send({ msg: 'please provide a username and password' }); }
   verifyCharityInfo(req.body)
     .then(({ charity_id, valid }) => {
       if (valid) {
@@ -45,6 +44,7 @@ exports.signInCharity = (req, res, next) => {
 
 exports.getCharityRequirements = (req, res, next) => {
   const { charity_id } = req.params;
+
   fetchCharityRequirements(charity_id)
     .then((charityRequirements) => {
       res.status(200).send({ charityRequirements });
