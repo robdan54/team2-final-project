@@ -7,8 +7,6 @@ exports.handlesCustomErrors = (err, req, res, next) => {
 exports.handlesPsqlErrors = (err, req, res, next) => {
   if (err.code === '22P02') {
     res.status(400).send({ msg: 'Bad Request - incorrect body data' });
-  } else if (err.code === '23503') {
-    res.status(400).send({ msg: "Bad Request - username doesn't exist" });
   } else if (err.code === '23502') {
     res.status(400).send({ msg: 'Bad Request - invalid input' });
   } else next(err);

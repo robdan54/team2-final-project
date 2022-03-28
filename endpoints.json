@@ -25,7 +25,16 @@
     },
 
     "GET /api/charities" : {
-        "description": "serves an array of all charity users including charity_id, charity_name, address, charity_website and email_address"
+        "description": "serves an array of all charity users including charity_id, charity_name, address, charity_website, email_address, lat, lng",
+        "exampleResponse": {
+            "charity_id": 1,
+            "charity_name": "Charity 1d",
+            "address": "1 charity road, location1, A666AAd",
+            "charity_website": "testcharitywebsite1d",
+            "email_address": "testEmail1d",
+            "lat": 53.804235,
+            "lng": -1.550362
+            }
     },
 
     "POST /api/charities": {

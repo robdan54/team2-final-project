@@ -1,23 +1,22 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 
-
-exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng FROM charities_users;').then((result) => result.rows);
+exports.fetchCharities = (lat = 53.80754277823678, lng = -1.5484416213022532) => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng, ROUND (( 6371000 * acos( cos( radians(lat) ) * cos( radians( $1) ) * cos( radians($2 ) - radians(lng) ) + sin( radians(lat) ) * sin( radians($1))))) AS distance FROM charities_users;', [lat, lng]).then((result) => result.rows);
 
 // posts a new charity with an encrypted password
 
 exports.postCharity = async (charity) => {
   const {
-    charity_name, address, charity_website, charity_username, password, email_address,
+    charity_name, address, charity_website, charity_username, password, email_address, lat, lng,
   } = charity;
 
   const { rows: [charityRow] } = await db.query(`INSERT INTO charities_users
-              (charity_name, address, charity_website, charity_username, password, email_address)
+              (charity_name, address, charity_website, password, email_address, lat, lng)
           VALUES
-              ($1, $2, $3, $4, $5, $6)
+              ($1, $2, $3, $4, $5, $6, $7)
   
           RETURNING *;
-          `, [charity_name, address, charity_website, charity_username, bcrypt.hashSync(password, 2), email_address]);
+          `, [charity_name, address, charity_website, bcrypt.hashSync(password, 2), email_address, lat, lng]);
   return charityRow;
 };
 
