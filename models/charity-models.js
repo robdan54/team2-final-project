@@ -1,7 +1,11 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 
+// returns a list of all charities
+
 exports.fetchCharities = () => db.query('SELECT charity_id, charity_name, address, charity_website, email_address FROM charities_users;').then((result) => result.rows);
+
+// posts a new charity with an encrypted password
 
 exports.postCharity = async (charity) => {
   const {
@@ -17,6 +21,8 @@ exports.postCharity = async (charity) => {
           `, [charity_name, address, charity_website, charity_username, bcrypt.hashSync(password, 2), email_address]);
   return charityRow;
 };
+
+// checks if a username and password matches that of the database
 
 exports.verifyCharityInfo = async ({ username, password }) => {
   const { rows: [validUser] } = await db.query(`

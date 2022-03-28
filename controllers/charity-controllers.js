@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 const { fetchCharities, postCharity, verifyCharityInfo } = require('../models/charity-models');
 
+// handles the get charities endpoint
+
 exports.getCharities = (req, res, next) => {
   fetchCharities()
     .then((charities) => {
@@ -12,12 +14,16 @@ exports.getCharities = (req, res, next) => {
     });
 };
 
+// handles the send charity endpoint
+
 exports.sendCharity = (req, res, next) => {
   const { body } = req;
   postCharity(body).then((charity) => {
     res.status(201).send({ charity });
   }).catch(next);
 };
+
+// handles the sign-in endpoint
 
 exports.signInCharity = (req, res, next) => {
   if (!req.body.username && !req.body.password) res.status(400).send({ msg: 'please provide a username and password' });
