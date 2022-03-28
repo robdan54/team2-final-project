@@ -29,6 +29,7 @@ const seed = async ({
 
   const insertCharityQueryStr = format(
 
+
     'INSERT INTO charities_users (charity_name, address, charity_website, password, email_address, lat, lng) VALUES %L RETURNING *;',
 
     charityUsersData.map(

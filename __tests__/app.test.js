@@ -115,6 +115,25 @@ describe('/api/charities', () => {
           );
         });
       }));
+    test('lat/lng queries should work and return an array of charities', () => request(app)
+      .get('/api/charities?lat=53.70754277823678&lng=-1.6484416213022532')
+      .expect(200)
+      .then((response) => {
+        response.body.charities.forEach((charity) => {
+          expect(charity).toEqual(
+            expect.objectContaining({
+              charity_id: expect.any(Number),
+              charity_name: expect.any(String),
+              address: expect.any(String),
+              charity_website: expect.any(String),
+              email_address: expect.any(String),
+              lat: expect.any(Number),
+              lng: expect.any(Number),
+              distance: expect.any(Number),
+            }),
+          );
+        });
+      }));
     test('by default, results should be ordered by distance ascending', () => request(app)
       .get('/api/charities')
       .expect(200)
