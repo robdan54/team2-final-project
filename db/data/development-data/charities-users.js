@@ -7,6 +7,8 @@ module.exports = [
     charityusername: 'CharityUser1d',
     password: 'TestCharityPassword1d',
     emailAddress: 'testEmail1d',
+    lat: 53.804235,
+    lng: -1.550362,
   },
   {
 
@@ -16,6 +18,8 @@ module.exports = [
     charityusername: 'CharityUser2d',
     password: 'TestCharityPassword2d',
     emailAddress: 'testEmail2d',
+    lat: 53.801304,
+    lng: -1.535924,
   },
   {
 
@@ -25,6 +29,8 @@ module.exports = [
     charityusername: 'CharityUser3d',
     password: 'TestCharityPassword3d',
     emailAddress: 'testEmail3d',
+    lat: 53.811383,
+    lng: -1.553339,
   },
   {
 
@@ -34,6 +40,8 @@ module.exports = [
     charityusername: 'CharityUser4d',
     password: 'TestCharityPassword4d',
     emailAddress: 'testEmail4d',
+    lat: 53.78174,
+    lng: -1.560452,
   },
   {
 
@@ -43,5 +51,7 @@ module.exports = [
     charityusername: 'CharityUser5d',
     password: 'TestCharityPassword5d',
     emailAddress: 'testEmail5d',
+    lat: 53.782032,
+    lng: -1.547276,
   },
 ];
