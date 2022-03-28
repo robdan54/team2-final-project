@@ -8,7 +8,6 @@ exports.fetchDonors = () => db.query('SELECT username, donator_id FROM donators_
 // posts a new donor with an encrypted password
 
 exports.postDonor = async (donor) => {
-  console.log(donor);
   const {
     username, password, email_address, address,
   } = donor;
