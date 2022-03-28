@@ -20,5 +20,6 @@ doc/api/
 *.js.map
 
 node_modules
+.env
 .env.test
 .env.development
