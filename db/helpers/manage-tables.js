@@ -13,7 +13,9 @@ const createTables = async () => {
     address VARCHAR NOT NULL,
     charity_website VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
-    email_address VARCHAR NOT NULL
+    email_address VARCHAR NOT NULL,
+    lat DOUBLE PRECISION,
+    lng DOUBLE PRECISION
   );`);
   const donatorUsersTablePromise = db.query(`
   CREATE TABLE donators_users (

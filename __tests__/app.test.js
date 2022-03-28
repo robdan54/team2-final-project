@@ -90,6 +90,27 @@ describe('/api/charities', () => {
               address: expect.any(String),
               charity_website: expect.any(String),
               email_address: expect.any(String),
+              lat: expect.any(Number),
+              lng: expect.any(Number),
+            }),
+          );
+        });
+      }));
+    test('lat/lng queries should work and return an array of charities', () => request(app)
+      .get('/api/charities?lat=53.70754277823678&lng=-1.6484416213022532')
+      .expect(200)
+      .then((response) => {
+        response.body.charities.forEach((charity) => {
+          expect(charity).toEqual(
+            expect.objectContaining({
+              charity_id: expect.any(Number),
+              charity_name: expect.any(String),
+              address: expect.any(String),
+              charity_website: expect.any(String),
+              email_address: expect.any(String),
+              lat: expect.any(Number),
+              lng: expect.any(Number),
+              distance: expect.any(Number),
             }),
           );
         });
@@ -102,6 +123,8 @@ describe('/api/charities', () => {
       charity_website: 'www.iamacharity.com',
       password: 'TestPasswordForTesting',
       email_address: 'testEmail@testing.test',
+      lat: 53.793741,
+      lng: -1.586513,
     };
     test('adds a charity to the database', () => request(app)
       .post('/api/charities')
@@ -122,7 +145,6 @@ describe('/api/charities', () => {
             charity_name: 'CharityTestName',
             address: '1 test street, test town, testingshire, TE57 1NG',
             charity_website: 'www.iamacharity.com',
-
             email_address: 'testEmail@testing.test',
           }),
         );
