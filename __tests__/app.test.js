@@ -337,6 +337,32 @@ describe('/api/:charity_id/requirements', () => {
   });
 });
 describe('api/donations', () => {
+  describe('GET', () => {
+    test('Status (200), responds with an array of donator donations', () => request(app)
+      .get('/api/4/donations')
+      .expect(200)
+      .then((response) => {
+        response.body.donatorDonations.forEach((donatorDonation) => {
+          expect(donatorDonation).toEqual(
+            expect.objectContaining({
+              donation_id: expect.any(Number),
+              donator_id: expect.any(Number),
+              category_name: expect.any(String),
+              item_id: expect.any(Number),
+              quantity_available: expect.any(Number),
+              created_at: expect.any(String),
+              item_name: expect.any(String),
+            }),
+          );
+        });
+      }));
+    test('Status(404), responds with an error if donator_id doesn\'t exist', () => request(app)
+      .get('/api/9999/donations')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe('Not found - donator ID doesn\'t exist');
+      }));
+  });
   describe('DELETE', () => {
     test('Status(204), responds with an empty response body', () => request(app)
       .delete('/api/donations/1')
