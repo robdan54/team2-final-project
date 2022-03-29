@@ -66,6 +66,8 @@ describe('/api/donors', () => {
               username: 'TestUserForTesting',
               address: '1 test street, test town, testingshire, TE57 1NG',
               email_address: 'testEmail@testing.test',
+              lat: expect.any(Number),
+              lng: expect.any(Number),
             }),
           );
           expect(bcrypt.compareSync(testUser.password, donor.password)).toBe(

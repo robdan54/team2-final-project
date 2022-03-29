@@ -23,7 +23,9 @@ const createTables = async () => {
     username VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     email_address VARCHAR NOT NULL,
-    address VARCHAR NOT NULL
+    address VARCHAR NOT NULL,
+    lat DOUBLE PRECISION,
+    lng DOUBLE PRECISION
   );`);
   await Promise.all([categoriesTablePromise, charityUsersTablePromise, donatorUsersTablePromise]);
   const itemsTablePromise = db.query(`
