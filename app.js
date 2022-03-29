@@ -19,6 +19,7 @@ const {
   sendCharityRequirement,
   updateCharityRequirement,
   deleteCharityRequest,
+  getCharityById,
 } = require('./controllers/charity-controllers');
 
 // Error handling controllers
@@ -55,6 +56,7 @@ app.delete('/api/donations/:donation_id', deleteDonorDonation);
 // charity routes
 
 app.get('/api/charities', getCharities);
+app.get('/api/charities/:charity_id', getCharityById);
 app.post('/api/charities', sendCharity);
 app.post('/api/charities/signin', signInCharity);
 

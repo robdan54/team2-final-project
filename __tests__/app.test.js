@@ -300,6 +300,28 @@ describe('/api/charities/signin', () => {
   });
 });
 
+describe('/api/charities/:charity_id', () => {
+  describe('GET', () => {
+    test('should respond with a single charity object', () => request(app).get('/api/charities/1').expect(200).then(({ body }) => {
+      expect(body.charity).toEqual({
+        charity_id: 1,
+        charity_name: 'Charity 1',
+        address: '1 charity road, location1, A666AA',
+        charity_website: 'testcharitywebsite1',
+        email_address: 'testEmail1',
+        lat: 53.804235,
+        lng: -1.550362,
+      });
+    }));
+    test('should respond 404 - Charity not found if given an id that does not exist', () => request(app).get('/api/charities/999999').expect(404).then(({ body: { msg } }) => {
+      expect(msg).toBe('404 - Charity not found');
+    }));
+    test('should respond 400 - Invalid Charity Id if given an invalid id format', () => request(app).get('/api/charities/notAnId').expect(400).then(({ body: { msg } }) => {
+      expect(msg).toBe('400 - Invalid Charity Id');
+    }));
+  });
+});
+
 // Charity Id requirements
 describe('/api/:charity_id/requirements', () => {
   describe('GET', () => {
@@ -342,6 +364,7 @@ describe('/api/:charity_id/requirements', () => {
       }));
   });
   describe('DELETE', () => {
+    // eslint-disable-next-line jest/expect-expect
     test('Status(204), responds with an empty response body', () => request(app)
       .delete('/api/requirements/1')
       .expect(204));
@@ -376,6 +399,7 @@ describe('/api/:charity_id/requirements', () => {
 });
 describe('api/donations', () => {
   describe('DELETE', () => {
+    // eslint-disable-next-line jest/expect-expect
     test('Status(204), responds with an empty response body', () => request(app)
       .delete('/api/donations/1')
       .expect(204));
