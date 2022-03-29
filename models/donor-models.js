@@ -39,3 +39,12 @@ exports.verifyDonorInfo = async ({ email_address, password }) => {
 
   return { donator_id: validUser.donator_id, valid };
 };
+
+// patch a donation
+
+exports.patchDonations = (requirement) => {
+  const { donation_id, quantity_available } = requirement;
+
+  return db.query('UPDATE donator_items SET quantity_available = quantity_available + $1 WHERE donation_id = $2 RETURNING *', [quantity_available, donation_id])
+    .then((result) => result.rows[0]);
+};

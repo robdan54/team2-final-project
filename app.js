@@ -7,6 +7,7 @@ const {
   getDonors,
   sendDonor,
   signInDonor,
+  updateDonations,
 } = require('./controllers/donor-controllers');
 
 // Charity controller functions
@@ -46,6 +47,9 @@ app.get('/api', getApi);
 app.get('/api/donors', getDonors);
 app.post('/api/donors', sendDonor);
 app.post('/api/donors/signin', signInDonor);
+
+// donor donations
+app.patch('/api/:donor_id/donations', updateDonations);
 
 // charity routes
 

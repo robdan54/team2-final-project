@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const { fetchDonors, postDonor, verifyDonorInfo } = require('../models/donor-models');
+const {
+  fetchDonors, postDonor, verifyDonorInfo, patchDonations,
+} = require('../models/donor-models');
 const config = require('../config/auth.config');
 
 // handles the get donors endpoint
@@ -34,4 +36,16 @@ exports.signInDonor = (req, res, next) => {
       res.status(202).send({ donator_id, accessToken: token });
     } else { res.status(401).send({ msg: 'invalid password' }); }
   }).catch(next);
+};
+
+// update the donations
+
+exports.updateDonations = (req, res, next) => {
+  patchDonations(req.body)
+    .then((donatorDonationsObject) => {
+      res.status(200).send({ donatorDonationsObject });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
