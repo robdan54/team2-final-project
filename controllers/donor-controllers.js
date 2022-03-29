@@ -4,7 +4,9 @@ const {
   fetchDonors, postDonor, verifyDonorInfo, removeDonorDonation,
 } = require('../models/donor-models');
 const config = require('../config/auth.config');
-const { checkDonorDonationExists } = require('../models/utils');
+
+const { doesUserEmailExist, checkDonorDonationExists } = require('../models/utils');
+
 
 // handles the get donors endpoint
 
@@ -22,8 +24,11 @@ exports.getDonors = (req, res, next) => {
 
 exports.sendDonor = (req, res, next) => {
   const { body } = req;
-  postDonor(body).then((donor) => {
-    res.status(201).send({ donor });
+
+  doesUserEmailExist(body.email_address, 'donators_users').then(() => {
+    postDonor(body).then((donor) => {
+      res.status(201).send({ donor });
+    });
   }).catch(next);
 };
 

@@ -7,6 +7,8 @@ const testData = require('../db/data/test-data');
 
 process.env.NODE_ENV = 'test';
 
+jest.setTimeout(100000);
+
 beforeEach(() => seed(testData));
 
 afterAll(() => db.end());
@@ -37,7 +39,6 @@ describe('/api/donors', () => {
         address: '1 test street, test town, testingshire, TE57 1NG',
         email_address: 'testEmail@testing.test',
       };
-
       return request(app)
         .post('/api/donors')
         .send(testUser)
@@ -74,6 +75,27 @@ describe('/api/donors', () => {
             true,
           );
         });
+    });
+    test('should not allow a user to signup with the same email', () => {
+      const testUser1 = {
+        username: 'TestUserForTesting',
+        password: 'TestPasswordForTesting',
+        address: '1 test street, test town, testingshire, TE57 1NG',
+        email_address: 'testEmail@testing.test',
+      };
+      const testUser2 = {
+        username: 'TestUserName2',
+        password: 'TestPasswordForadditionalTesting',
+        address: '2 test street, test town, testingshire, TE57 1NG',
+        email_address: 'testEmail@testing.test',
+      };
+      return request(app).post('/api/donors').send(testUser1).then(() => request(app).post('/api/donors').send(testUser2).expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('bad request - email address already in use');
+        })
+        .then(() => request(app).get('/api/donors').then(({ body: { donors } }) => {
+          expect(donors).toHaveLength(6);
+        })));
     });
   });
 });
@@ -167,6 +189,22 @@ describe('/api/charities', () => {
           bcrypt.compareSync(testCharity.password, charity.password),
         ).toBe(true);
       }));
+    test('should not allow a charity to signup with the same email', () => {
+      const testCharity2 = {
+        charity_name: 'OtherCharity',
+        address: '2 test street, test town, testingshire, TE57 1NG',
+        charity_website: 'www.iamaSecondcharity.com',
+        password: 'TestPasswordYetAnotherTestPassword',
+        email_address: 'testEmail@testing.test',
+      };
+      return request(app).post('/api/charities').send(testCharity).then(() => request(app).post('/api/charities').send(testCharity2).expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('bad request - email address already in use');
+        })
+        .then(() => request(app).get('/api/charities').then(({ body: { charities } }) => {
+          expect(charities).toHaveLength(6);
+        })));
+    });
   });
 });
 
