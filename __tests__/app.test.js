@@ -7,6 +7,8 @@ const testData = require('../db/data/test-data');
 
 process.env.NODE_ENV = 'test';
 
+jest.setTimeout(100000);
+
 beforeEach(() => seed(testData));
 
 afterAll(() => db.end());
@@ -37,7 +39,6 @@ describe('/api/donors', () => {
         address: '1 test street, test town, testingshire, TE57 1NG',
         email_address: 'testEmail@testing.test',
       };
-
       return request(app)
         .post('/api/donors')
         .send(testUser)
@@ -74,6 +75,27 @@ describe('/api/donors', () => {
             true,
           );
         });
+    });
+    test('should not allow a user to signup with the same email', () => {
+      const testUser1 = {
+        username: 'TestUserForTesting',
+        password: 'TestPasswordForTesting',
+        address: '1 test street, test town, testingshire, TE57 1NG',
+        email_address: 'testEmail@testing.test',
+      };
+      const testUser2 = {
+        username: 'TestUserName2',
+        password: 'TestPasswordForadditionalTesting',
+        address: '2 test street, test town, testingshire, TE57 1NG',
+        email_address: 'testEmail@testing.test',
+      };
+      return request(app).post('/api/donors').send(testUser1).then(() => request(app).post('/api/donors').send(testUser2).expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('bad request - email address already in use');
+        })
+        .then(() => request(app).get('/api/donors').then(({ body: { donors } }) => {
+          expect(donors).toHaveLength(6);
+        })));
     });
   });
 });
@@ -167,6 +189,22 @@ describe('/api/charities', () => {
           bcrypt.compareSync(testCharity.password, charity.password),
         ).toBe(true);
       }));
+    test('should not allow a charity to signup with the same email', () => {
+      const testCharity2 = {
+        charity_name: 'OtherCharity',
+        address: '2 test street, test town, testingshire, TE57 1NG',
+        charity_website: 'www.iamaSecondcharity.com',
+        password: 'TestPasswordYetAnotherTestPassword',
+        email_address: 'testEmail@testing.test',
+      };
+      return request(app).post('/api/charities').send(testCharity).then(() => request(app).post('/api/charities').send(testCharity2).expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('bad request - email address already in use');
+        })
+        .then(() => request(app).get('/api/charities').then(({ body: { charities } }) => {
+          expect(charities).toHaveLength(6);
+        })));
+    });
   });
 });
 
@@ -314,28 +352,40 @@ describe('/api/:charity_id/requirements', () => {
         expect(response.body.msg).toBe('Not found - request ID doesn\'t exist');
       }));
   });
-});
-
-describe('Patch', () => {
-  const testRequest = {
-    request_id: '1',
-    quantity_required: '100',
-  };
-  test('Status(200), update quantity of the charity requirement', () => request(app)
-    .patch('/api/1/requirements')
-    .send(testRequest)
-    .then((response) => {
-      expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
-      expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
-        category_name: 'food',
-        charity_id: 1,
-        created_at: expect.any(String),
-        item_id: 1,
-        quantity_required: 120,
-        request_id: 1,
-        urgent: false,
+  describe('PATCH', () => {
+    const testRequest = {
+      request_id: '1',
+      quantity_required: '100',
+    };
+    test('Status(200), update quantity of the charity requirement', () => request(app)
+      .patch('/api/1/requirements')
+      .send(testRequest)
+      .then((response) => {
+        expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
+        expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
+          category_name: 'food',
+          charity_id: 1,
+          created_at: expect.any(String),
+          item_id: 1,
+          quantity_required: 120,
+          request_id: 1,
+          urgent: false,
+        }));
       }));
-    }));
+  });
+});
+describe('api/donations', () => {
+  describe('DELETE', () => {
+    test('Status(204), responds with an empty response body', () => request(app)
+      .delete('/api/donations/1')
+      .expect(204));
+    test('status(404), responds with an error if donation_id doesn\'t exist', () => request(app)
+      .delete('/api/donations/9999')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe('Not found - donation ID doesn\'t exist');
+      }));
+  });
 });
 
 // donor donations
