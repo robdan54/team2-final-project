@@ -319,16 +319,48 @@ describe('/api/:charity_id/requirements', () => {
         }]);
       }));
   });
+  describe('POST', () => {
+    const testRequest = {
+      category_name: 'food',
+      item_id: '1',
+      quantity_required: '200',
+    };
+    test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
+      .post('/api/1/requirements')
+      .send(testRequest)
+      .then((response) => {
+        expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
+        expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
+          category_name: 'food',
+          charity_id: 1,
+          created_at: expect.any(String),
+          item_id: 1,
+          quantity_required: 200,
+          request_id: expect.any(Number),
+          urgent: false,
+        }));
+      }));
+  });
+  describe('DELETE', () => {
+    test('Status(204), responds with an empty response body', () => request(app)
+      .delete('/api/requirements/1')
+      .expect(204));
+    test('status(404), responds with an error if request_id doesn\'t exist', () => request(app)
+      .delete('/api/requirements/9999')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe('Not found - request ID doesn\'t exist');
+      }));
+  });
 });
 
-describe('POST', () => {
+describe('Patch', () => {
   const testRequest = {
-    category_name: 'food',
-    item_id: '1',
-    quantity_required: '200',
+    request_id: '1',
+    quantity_required: '100',
   };
-  test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
-    .post('/api/1/requirements')
+  test('Status(200), update quantity of the charity requirement', () => request(app)
+    .patch('/api/1/requirements')
     .send(testRequest)
     .then((response) => {
       expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
@@ -337,8 +369,8 @@ describe('POST', () => {
         charity_id: 1,
         created_at: expect.any(String),
         item_id: 1,
-        quantity_required: 200,
-        request_id: expect.any(Number),
+        quantity_required: 120,
+        request_id: 1,
         urgent: false,
       }));
     }));

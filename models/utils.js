@@ -12,3 +12,13 @@ exports.doesUserEmailExist = (email, role) => db.query(`SELECT * FROM ${role} WH
   if (rows.length !== 0) return Promise.reject({ status: 400, msg: 'bad request - email address already in use' });
   return rows;
 });
+
+exports.checkCharityRequestExists = (request_id, next) => db
+  .query('SELECT * FROM charity_reqs WHERE request_id = $1;', [request_id])
+  .then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: 'Not found - request ID doesn\'t exist' });
+    }
+    return rows;
+  })
+  .catch(next);

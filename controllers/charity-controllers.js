@@ -6,8 +6,12 @@ const {
   verifyCharityInfo,
   fetchCharityRequirements,
   postCharityRequirement,
+  patchCharityRequirement,
+  removeCharityRequest,
 } = require('../models/charity-models');
-const { doesUserEmailExist } = require('../models/utils');
+
+const { doesUserEmailExist, checkCharityRequestExists } = require('../models/utils');
+
 
 // handles the get charities endpoint
 
@@ -68,4 +72,25 @@ exports.sendCharityRequirement = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.updateCharityRequirement = (req, res, next) => {
+  const { charity_id } = req.params;
+  patchCharityRequirement(charity_id, req.body)
+    .then((charityRequirementObject) => {
+      res.status(200).send({ charityRequirementObject });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+exports.deleteCharityRequest = (req, res, next) => {
+  const { request_id } = req.params;
+  checkCharityRequestExists(request_id)
+    .then((removeCharityRequest(request_id)))
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch(next);
 };
