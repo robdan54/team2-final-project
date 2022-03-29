@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
+const { convertToLatLng } = require('./utils');
 
 // gets a list of all donors
 
@@ -12,13 +13,15 @@ exports.postDonor = async (donor) => {
     username, password, email_address, address,
   } = donor;
 
+  const latLng = await convertToLatLng(address);
+
   const { rows: [donorRow] } = await db.query(`INSERT INTO donators_users
-            (username, password, email_address, address)
+            (username, password, email_address, address, lat, lng)
         VALUES
-            ($1, $2, $3, $4)
+            ($1, $2, $3, $4, $5, $6)
 
         RETURNING *;
-        `, [username, bcrypt.hashSync(password, 2), email_address, address]);
+        `, [username, bcrypt.hashSync(password, 2), email_address, address, latLng.latitude, latLng.longitude]);
   return donorRow;
 };
 

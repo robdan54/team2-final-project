@@ -59,3 +59,6 @@ exports.patchCharityRequirement = (charity_id, requirement) => {
   return db.query('UPDATE charity_reqs SET quantity_required = quantity_required + $1 WHERE request_id = $2 RETURNING *', [quantity_required, request_id])
     .then((result) => result.rows[0]);
 };
+
+exports.removeCharityRequest = (request_id) => db.query('DELETE FROM charity_reqs where request_id = $1;', [request_id]);
+
