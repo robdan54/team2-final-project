@@ -303,3 +303,25 @@ describe('POST', () => {
       }));
     }));
 });
+
+describe('Patch', () => {
+  const testRequest = {
+    request_id: '1',
+    quantity_required: '100',
+  };
+  test('Status(200), update quantity of the charity requirement', () => request(app)
+    .patch('/api/1/requirements')
+    .send(testRequest)
+    .then((response) => {
+      expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
+      expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
+        category_name: 'food',
+        charity_id: 1,
+        created_at: expect.any(String),
+        item_id: 1,
+        quantity_required: 120,
+        request_id: 1,
+        urgent: false,
+      }));
+    }));
+});
