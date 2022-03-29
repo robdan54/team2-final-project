@@ -323,20 +323,22 @@ describe('/api/charities/:charity_id', () => {
 });
 
 describe('/api/donors/:donator_id', () => {
-  test('should respond with a single donator object', () => request(app).get('/api/donors/1').expect(200).then(({ body: { donor } }) => expect(donor).toEqual({
-    donator_id: 1,
-    username: 'TestUser1',
-    email_address: 'testemail1',
-    address: '1 roady road, Walmley, A111AA',
-    lat: 53.804235,
-    lng: -1.550362,
-  })));
-  test('should respond 404 donator not found when given an incorrect id', () => request(app).get('/api/donors/99999').expect(404).then(({ body: { msg } }) => {
-    expect(msg).toBe('404 - Donator Not Found');
-  }));
-  test('should respond 400 Invalid Donator Id if given an invalid Id format', () => request(app).get('/api/donors/notAnId').expect(400).then(({ body: { msg } }) => {
-    expect(msg).toBe('400 - Invalid Donator Id');
-  }));
+  describe('GET', () => {
+    test('should respond with a single donator object', () => request(app).get('/api/donors/1').expect(200).then(({ body: { donor } }) => expect(donor).toEqual({
+      donator_id: 1,
+      username: 'TestUser1',
+      email_address: 'testemail1',
+      address: '1 roady road, Walmley, A111AA',
+      lat: 53.804235,
+      lng: -1.550362,
+    })));
+    test('should respond 404 donator not found when given an incorrect id', () => request(app).get('/api/donors/99999').expect(404).then(({ body: { msg } }) => {
+      expect(msg).toBe('404 - Donator Not Found');
+    }));
+    test('should respond 400 Invalid Donator Id if given an invalid Id format', () => request(app).get('/api/donors/notAnId').expect(400).then(({ body: { msg } }) => {
+      expect(msg).toBe('400 - Invalid Donator Id');
+    }));
+  });
 });
 
 // Charity Id requirements
