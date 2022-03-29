@@ -281,26 +281,25 @@ describe('/api/:charity_id/requirements', () => {
   });
 });
 
-  describe.only('POST', () => {
-    const testRequest = {
-      category_name: 'food',
-      item_id: '1',
-      quantity_required: '200',
-    }
-    test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
-      .post('/api/1/requirements')
-      .send(testRequest)
-        .then((response) => {
-          expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
-          expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
-            category_name: 'food',
-            charity_id: 1,
-            created_at: expect.any(String),
-            item_id: 1,
-            quantity_required: 200,
-            request_id: expect.any(Number),
-            urgent: false,
-          }))
-      })
-    );
-  });
+describe('POST', () => {
+  const testRequest = {
+    category_name: 'food',
+    item_id: '1',
+    quantity_required: '200',
+  };
+  test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
+    .post('/api/1/requirements')
+    .send(testRequest)
+    .then((response) => {
+      expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
+      expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
+        category_name: 'food',
+        charity_id: 1,
+        created_at: expect.any(String),
+        item_id: 1,
+        quantity_required: 200,
+        request_id: expect.any(Number),
+        urgent: false,
+      }));
+    }));
+});
