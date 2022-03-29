@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const { fetchDonors, postDonor, verifyDonorInfo } = require('../models/donor-models');
 const config = require('../config/auth.config');
+const { doesDonorEmailExist } = require('../models/utils');
 
 // handles the get donors endpoint
 
@@ -19,8 +20,11 @@ exports.getDonors = (req, res, next) => {
 
 exports.sendDonor = (req, res, next) => {
   const { body } = req;
-  postDonor(body).then((donor) => {
-    res.status(201).send({ donor });
+
+  doesDonorEmailExist(body.email_address).then(() => {
+    postDonor(body).then((donor) => {
+      res.status(201).send({ donor });
+    });
   }).catch(next);
 };
 
