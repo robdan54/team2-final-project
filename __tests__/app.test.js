@@ -412,7 +412,29 @@ describe('api/donations', () => {
   });
 });
 
-// donor donations
+// Donor donations
+describe('POST', () => {
+  const testRequest = {
+    category_name: 'food',
+    item_id: 1,
+    quantity_available: 10
+  }
+  test('Status (201), posts a new donation', () => request(app)
+    .post('/api/1/donations')
+    .send(testRequest)
+    .then((response) => {
+      console.log(response.body.donatorDonationObject)
+      expect(response.body.donatorDonationObject).toBeInstanceOf(Object);
+      expect(response.body.donatorDonationObject).toEqual(expect.objectContaining({
+        donation_id: 11,
+        donator_id: 1,
+        category_name: 'food',
+        item_id: 1,
+        quantity_available: 10,
+        created_at: expect.any(String),
+      }));
+    }));
+});
 
 describe('PATCH', () => {
   const testRequest = {

@@ -40,8 +40,16 @@ exports.verifyDonorInfo = async ({ email_address, password }) => {
   return { donator_id: validUser.donator_id, valid };
 };
 
+// POST A DONATION
 
-// patch a donation
+exports.postDonation = (donator_id, donation) => {
+  const { category_name, item_id, quantity_available } = donation;
+
+  return db.query('INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available) VALUES ($1, $2, $3, $4) RETURNING *;', [donator_id, category_name, item_id, quantity_available])
+  .then((result) => result.rows[0]);
+}
+
+// PATCH A DONATION
 
 exports.patchDonations = (requirement) => {
   const { donation_id, quantity_available } = requirement;

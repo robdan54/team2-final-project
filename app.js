@@ -7,6 +7,7 @@ const {
   getDonors,
   sendDonor,
   signInDonor,
+  sendDonation,
   updateDonations,
   deleteDonorDonation,
 } = require('./controllers/donor-controllers');
@@ -52,6 +53,7 @@ app.post('/api/donors/signin', signInDonor);
 
 
 // donor donations
+app.post('/api/:donor_id/donations', sendDonation);
 app.patch('/api/:donor_id/donations', updateDonations);
 
 // donor requirements

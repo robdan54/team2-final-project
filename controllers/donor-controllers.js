@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const {
-  fetchDonors, postDonor, verifyDonorInfo, patchDonations, removeDonorDonation,
+  fetchDonors, postDonor, verifyDonorInfo, patchDonations, removeDonorDonation, postDonation
 } = require('../models/donor-models');
 
 const config = require('../config/auth.config');
@@ -45,6 +45,17 @@ exports.signInDonor = (req, res, next) => {
 };
 
 // update the donations
+
+exports.sendDonation = (req, res, next) => {
+  const { donor_id } = req.params;
+  postDonation(donor_id, req.body)
+    .then((donatorDonationObject) => {
+      res.status(201).send({ donatorDonationObject})
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
 
 exports.updateDonations = (req, res, next) => {
   patchDonations(req.body)
