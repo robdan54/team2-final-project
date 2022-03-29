@@ -7,6 +7,7 @@ const {
   fetchCharityRequirements,
   postCharityRequirement,
 } = require('../models/charity-models');
+const { doesUserEmailExist } = require('../models/utils');
 
 // handles the get charities endpoint
 
@@ -25,11 +26,13 @@ exports.getCharities = (req, res, next) => {
 
 exports.sendCharity = (req, res, next) => {
   const { body } = req;
-  postCharity(body)
-    .then((charity) => {
-      res.status(201).send({ charity });
-    })
-    .catch(next);
+
+  doesUserEmailExist(body.email_address, 'charities_users').then(() => {
+    postCharity(body)
+      .then((charity) => {
+        res.status(201).send({ charity });
+      });
+  }).catch(next);
 };
 
 // handles the sign-in endpoint
