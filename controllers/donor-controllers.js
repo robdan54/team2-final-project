@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 const {
-  fetchDonors, postDonor, verifyDonorInfo, removeDonorDonation, fetchDonorById,
+
+  fetchDonors, postDonor, verifyDonorInfo, patchDonations, removeDonorDonation, fetchDonorDonations, fetchDonorById,
+
 } = require('../models/donor-models');
+
 const config = require('../config/auth.config');
 
-const { doesUserEmailExist, checkDonorDonationExists } = require('../models/utils');
+const { doesUserEmailExist, checkDonorDonationExists, checkDonorExists, } = require('../models/utils');
 
 // handles the get donors endpoint
 
@@ -43,6 +46,18 @@ exports.signInDonor = (req, res, next) => {
   }).catch(next);
 };
 
+// update the donations
+
+exports.updateDonations = (req, res, next) => {
+  patchDonations(req.body)
+    .then((donatorDonationsObject) => {
+      res.status(200).send({ donatorDonationsObject });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+  
 exports.deleteDonorDonation = (req, res, next) => {
   const { donation_id } = req.params;
   checkDonorDonationExists(donation_id)
@@ -53,8 +68,19 @@ exports.deleteDonorDonation = (req, res, next) => {
     .catch(next);
 };
 
+
 exports.getDonorById = (req, res, next) => {
   const { donator_id } = req.params;
   if (!Number.parseInt(donator_id, 10)) res.status(400).send({ msg: '400 - Invalid Donator Id' });
   fetchDonorById(donator_id).then((donor) => res.status(200).send({ donor })).catch(next);
+};
+
+exports.getDonorDonations = (req, res, next) => {
+  const { donator_id } = req.params;
+
+  checkDonorExists(donator_id).then(() => fetchDonorDonations(donator_id))
+    .then((response) => {
+      res.status(200).send({ donatorDonations: response });
+    })
+    .catch(next);
 };
