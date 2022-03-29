@@ -2,13 +2,19 @@ const jwt = require('jsonwebtoken');
 
 const {
 
-  fetchDonors, postDonor, verifyDonorInfo, patchDonations, removeDonorDonation, fetchDonorDonations, fetchDonorById,
+  fetchDonors,
+  postDonor,
+  verifyDonorInfo,
+  patchDonations,
+  removeDonorDonation,
+  fetchDonorDonations,
+  fetchDonorById,
 
 } = require('../models/donor-models');
 
 const config = require('../config/auth.config');
 
-const { doesUserEmailExist, checkDonorDonationExists, checkDonorExists, } = require('../models/utils');
+const { doesUserEmailExist, checkDonorDonationExists, checkDonorExists } = require('../models/utils');
 
 // handles the get donors endpoint
 
@@ -57,7 +63,7 @@ exports.updateDonations = (req, res, next) => {
       next(err);
     });
 };
-  
+
 exports.deleteDonorDonation = (req, res, next) => {
   const { donation_id } = req.params;
   checkDonorDonationExists(donation_id)
@@ -67,7 +73,6 @@ exports.deleteDonorDonation = (req, res, next) => {
     })
     .catch(next);
 };
-
 
 exports.getDonorById = (req, res, next) => {
   const { donator_id } = req.params;
