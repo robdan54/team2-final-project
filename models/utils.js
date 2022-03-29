@@ -9,7 +9,6 @@ exports.convertToLatLng = (address) => {
 };
 
 exports.doesUserEmailExist = (email, role) => db.query(`SELECT * FROM ${role} WHERE email_address = $1`, [email]).then(({ rows }) => {
-    console.log(rows)
   if (rows.length !== 0) return Promise.reject({ status: 400, msg: 'bad request - email address already in use' });
   return rows;
 });
