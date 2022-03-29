@@ -8,10 +8,10 @@ const {
   postCharityRequirement,
   patchCharityRequirement,
   removeCharityRequest,
+  fetchCharityById,
 } = require('../models/charity-models');
 
 const { doesUserEmailExist, checkCharityRequestExists } = require('../models/utils');
-
 
 // handles the get charities endpoint
 
@@ -93,4 +93,10 @@ exports.deleteCharityRequest = (req, res, next) => {
       res.sendStatus(204);
     })
     .catch(next);
+};
+
+exports.getCharityById = (req, res, next) => {
+  const { charity_id } = req.params;
+  if (!Number.parseInt(charity_id, 10)) res.status(400).send({ msg: '400 - Invalid Charity Id' });
+  fetchCharityById(charity_id).then((charity) => res.status(200).send({ charity })).catch(next);
 };

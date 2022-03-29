@@ -7,7 +7,6 @@ const config = require('../config/auth.config');
 
 const { doesUserEmailExist, checkDonorDonationExists } = require('../models/utils');
 
-
 // handles the get donors endpoint
 
 exports.getDonors = (req, res, next) => {
