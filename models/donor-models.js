@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 const { convertToLatLng } = require('./utils');
@@ -40,6 +41,12 @@ exports.verifyDonorInfo = async ({ email_address, password }) => {
   return { donator_id: validUser.donator_id, valid };
 };
 
+exports.removeDonorDonation = (donation_id) => db.query('DELETE FROM donator_items WHERE donation_id = $1;', [donation_id]);
+
+exports.fetchDonorById = (donator_id) => db.query('SELECT donator_id, username, email_address, address, lat, lng FROM donators_users WHERE donator_id = $1', [donator_id]).then(({ rows }) => {
+  if (rows.length !== 1) return Promise.reject({ status: 404, msg: '404 - Donator Not Found' });
+  return rows[0];
+});
 
 // patch a donation
 
@@ -48,11 +55,9 @@ exports.patchDonations = (requirement) => {
 
   return db.query('UPDATE donator_items SET quantity_available = quantity_available + $1 WHERE donation_id = $2 RETURNING *', [quantity_available, donation_id])
     .then((result) => result.rows[0]);
-};
 
 exports.removeDonorDonation = (donation_id) => db.query('DELETE FROM donator_items where donation_id = $1;', [donation_id]);
 
 exports.fetchDonorDonations = (donator_id) => db
   .query('SELECT * FROM donator_items JOIN items ON donator_items.item_id = items.item_id WHERE donator_id = $1;', [donator_id])
   .then((results) => results.rows);
-
