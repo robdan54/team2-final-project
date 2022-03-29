@@ -39,3 +39,5 @@ exports.verifyDonorInfo = async ({ email_address, password }) => {
 
   return { donator_id: validUser.donator_id, valid };
 };
+
+exports.removeDonorDonation = (donation_id) => db.query('DELETE FROM donator_items where donation_id = $1;', [donation_id]);
