@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const {
-  fetchDonors, postDonor, verifyDonorInfo, removeDonorDonation,
+  fetchDonors, postDonor, verifyDonorInfo, removeDonorDonation, fetchDonorById,
 } = require('../models/donor-models');
 const config = require('../config/auth.config');
 
@@ -51,4 +51,10 @@ exports.deleteDonorDonation = (req, res, next) => {
       res.sendStatus(204);
     })
     .catch(next);
+};
+
+exports.getDonorById = (req, res, next) => {
+  const { donator_id } = req.params;
+  if (!Number.parseInt(donator_id, 10)) res.status(400).send({ msg: '400 - Invalid Donator Id' });
+  fetchDonorById(donator_id).then((donor) => res.status(200).send({ donor })).catch(next);
 };

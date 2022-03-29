@@ -56,14 +56,16 @@ const seed = async ({
     .then((result) => result.row);
 
   const insertDonatorQueryStr = format(
-    'INSERT INTO donators_users (username, password, email_address, address) VALUES %L RETURNING *;',
+    'INSERT INTO donators_users (username, password, email_address, address, lat, lng) VALUES %L RETURNING *;',
     donatorUsersData.map(({
-      username, password, emailAddress, address,
+      username, password, emailAddress, address, lat, lng,
     }) => [
       username,
       bcrypt.hashSync(password, 2),
       emailAddress,
       address,
+      lat,
+      lng,
     ]),
   );
 
