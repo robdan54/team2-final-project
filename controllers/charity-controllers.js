@@ -6,6 +6,7 @@ const {
   verifyCharityInfo,
   fetchCharityRequirements,
   postCharityRequirement,
+  patchCharityRequirement,
   removeCharityRequest,
 } = require('../models/charity-models');
 const { checkCharityRequestExists } = require('../models/utils');
@@ -69,9 +70,18 @@ exports.sendCharityRequirement = (req, res, next) => {
     });
 };
 
+exports.updateCharityRequirement = (req, res, next) => {
+  const { charity_id } = req.params;
+  patchCharityRequirement(charity_id, req.body)
+    .then((charityRequirementObject) => {
+      res.status(200).send({ charityRequirementObject });
+    })
+    .catch((err) => {
+      next(err);
+    });
+
 exports.deleteCharityRequest = (req, res, next) => {
   const { request_id } = req.params;
-
   checkCharityRequestExists(request_id)
     .then((removeCharityRequest(request_id)))
     .then(() => {

@@ -16,6 +16,7 @@ const {
   signInCharity,
   getCharityRequirements,
   sendCharityRequirement,
+  updateCharityRequirement,
   deleteCharityRequest,
 } = require('./controllers/charity-controllers');
 
@@ -55,6 +56,7 @@ app.post('/api/charities/signin', signInCharity);
 // Charities requirements
 app.get('/api/:charity_id/requirements', getCharityRequirements);
 app.post('/api/:charity_id/requirements', sendCharityRequirement);
+app.patch('/api/:charity_id/requirements', updateCharityRequirement);
 app.delete('/api/requirements/:request_id', deleteCharityRequest);
 
 // Error handling
