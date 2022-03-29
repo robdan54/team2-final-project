@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 const bcrypt = require('bcrypt');
 const db = require('../db/connection');
 const { convertToLatLng } = require('./utils');
@@ -56,8 +57,13 @@ exports.postCharityRequirement = (charity_id, requirement) => {
 exports.patchCharityRequirement = (charity_id, requirement) => {
   const { request_id, quantity_required } = requirement;
 
-  return db.query('UPDATE charity_reqs SET quantity_required = quantity_required + $1 WHERE request_id = $2 RETURNING *', [quantity_required, request_id])
+  return db.query('UPDATE charity_reqs SET quantity_required = quantity_required + $1 WHERE request_id = $2 RETURNING *;', [quantity_required, request_id])
     .then((result) => result.rows[0]);
 };
 
 exports.removeCharityRequest = (request_id) => db.query('DELETE FROM charity_reqs where request_id = $1;', [request_id]);
+
+exports.fetchCharityById = (charity_id) => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng FROM charities_users WHERE charity_id = $1;', [charity_id]).then(({ rows }) => {
+  if (rows.length !== 1) return Promise.reject({ status: 404, msg: '404 - Charity not found' });
+  return rows[0];
+});

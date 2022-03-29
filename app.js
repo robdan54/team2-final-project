@@ -7,6 +7,7 @@ const {
   getDonors,
   sendDonor,
   signInDonor,
+  updateDonations,
   deleteDonorDonation,
   getDonorDonations,
 } = require('./controllers/donor-controllers');
@@ -20,6 +21,7 @@ const {
   sendCharityRequirement,
   updateCharityRequirement,
   deleteCharityRequest,
+  getCharityById,
 } = require('./controllers/charity-controllers');
 
 // Error handling controllers
@@ -49,14 +51,16 @@ app.get('/api/donors', getDonors);
 app.post('/api/donors', sendDonor);
 app.post('/api/donors/signin', signInDonor);
 
-// donor requirements
+// donor donations
 
 app.get('/api/:donator_id/donations', getDonorDonations);
+app.patch('/api/:donor_id/donations', updateDonations);
 app.delete('/api/donations/:donation_id', deleteDonorDonation);
 
 // charity routes
 
 app.get('/api/charities', getCharities);
+app.get('/api/charities/:charity_id', getCharityById);
 app.post('/api/charities', sendCharity);
 app.post('/api/charities/signin', signInCharity);
 

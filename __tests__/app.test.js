@@ -7,6 +7,8 @@ const testData = require('../db/data/test-data');
 
 process.env.NODE_ENV = 'test';
 
+jest.setTimeout(100000);
+
 beforeEach(() => seed(testData));
 
 afterAll(() => db.end());
@@ -37,7 +39,6 @@ describe('/api/donors', () => {
         address: '1 test street, test town, testingshire, TE57 1NG',
         email_address: 'testEmail@testing.test',
       };
-
       return request(app)
         .post('/api/donors')
         .send(testUser)
@@ -74,6 +75,27 @@ describe('/api/donors', () => {
             true,
           );
         });
+    });
+    test('should not allow a user to signup with the same email', () => {
+      const testUser1 = {
+        username: 'TestUserForTesting',
+        password: 'TestPasswordForTesting',
+        address: '1 test street, test town, testingshire, TE57 1NG',
+        email_address: 'testEmail@testing.test',
+      };
+      const testUser2 = {
+        username: 'TestUserName2',
+        password: 'TestPasswordForadditionalTesting',
+        address: '2 test street, test town, testingshire, TE57 1NG',
+        email_address: 'testEmail@testing.test',
+      };
+      return request(app).post('/api/donors').send(testUser1).then(() => request(app).post('/api/donors').send(testUser2).expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('bad request - email address already in use');
+        })
+        .then(() => request(app).get('/api/donors').then(({ body: { donors } }) => {
+          expect(donors).toHaveLength(6);
+        })));
     });
   });
 });
@@ -167,6 +189,22 @@ describe('/api/charities', () => {
           bcrypt.compareSync(testCharity.password, charity.password),
         ).toBe(true);
       }));
+    test('should not allow a charity to signup with the same email', () => {
+      const testCharity2 = {
+        charity_name: 'OtherCharity',
+        address: '2 test street, test town, testingshire, TE57 1NG',
+        charity_website: 'www.iamaSecondcharity.com',
+        password: 'TestPasswordYetAnotherTestPassword',
+        email_address: 'testEmail@testing.test',
+      };
+      return request(app).post('/api/charities').send(testCharity).then(() => request(app).post('/api/charities').send(testCharity2).expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe('bad request - email address already in use');
+        })
+        .then(() => request(app).get('/api/charities').then(({ body: { charities } }) => {
+          expect(charities).toHaveLength(6);
+        })));
+    });
   });
 });
 
@@ -262,6 +300,28 @@ describe('/api/charities/signin', () => {
   });
 });
 
+describe('/api/charities/:charity_id', () => {
+  describe('GET', () => {
+    test('should respond with a single charity object', () => request(app).get('/api/charities/1').expect(200).then(({ body }) => {
+      expect(body.charity).toEqual({
+        charity_id: 1,
+        charity_name: 'Charity 1',
+        address: '1 charity road, location1, A666AA',
+        charity_website: 'testcharitywebsite1',
+        email_address: 'testEmail1',
+        lat: 53.804235,
+        lng: -1.550362,
+      });
+    }));
+    test('should respond 404 - Charity not found if given an id that does not exist', () => request(app).get('/api/charities/999999').expect(404).then(({ body: { msg } }) => {
+      expect(msg).toBe('404 - Charity not found');
+    }));
+    test('should respond 400 - Invalid Charity Id if given an invalid id format', () => request(app).get('/api/charities/notAnId').expect(400).then(({ body: { msg } }) => {
+      expect(msg).toBe('400 - Invalid Charity Id');
+    }));
+  });
+});
+
 // Charity Id requirements
 describe('/api/:charity_id/requirements', () => {
   describe('GET', () => {
@@ -304,6 +364,7 @@ describe('/api/:charity_id/requirements', () => {
       }));
   });
   describe('DELETE', () => {
+    // eslint-disable-next-line jest/expect-expect
     test('Status(204), responds with an empty response body', () => request(app)
       .delete('/api/requirements/1')
       .expect(204));
@@ -364,6 +425,7 @@ describe('api/donations', () => {
       }));
   });
   describe('DELETE', () => {
+    // eslint-disable-next-line jest/expect-expect
     test('Status(204), responds with an empty response body', () => request(app)
       .delete('/api/donations/1')
       .expect(204));
@@ -374,4 +436,27 @@ describe('api/donations', () => {
         expect(response.body.msg).toBe('Not found - donation ID doesn\'t exist');
       }));
   });
+});
+
+// donor donations
+
+describe('PATCH', () => {
+  const testRequest = {
+    donation_id: '1',
+    quantity_available: '5',
+  };
+  test('status(200), update quantity of the donor donations', () => request(app)
+    .patch('/api/1/donations')
+    .send(testRequest)
+    .then((response) => {
+      expect(response.body.donatorDonationsObject).toBeInstanceOf(Object);
+      expect(response.body.donatorDonationsObject).toEqual(expect.objectContaining({
+        quantity_available: 20,
+        donation_id: 1,
+        donator_id: 1,
+        category_name: 'food',
+        item_id: 2,
+        created_at: expect.any(String),
+      }));
+    }));
 });
