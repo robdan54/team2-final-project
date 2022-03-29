@@ -5,6 +5,7 @@ const {
   postCharity,
   verifyCharityInfo,
   fetchCharityRequirements,
+  postCharityRequirement
 } = require('../models/charity-models');
 
 // handles the get charities endpoint
@@ -53,4 +54,15 @@ exports.getCharityRequirements = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.sendCharityRequirement = (req, res, next) => {
+  const {charity_id} = req.params;
+  postCharityRequirement(charity_id, req.body)
+  .then((charityRequirementObject) => {
+    res.status(201).send({charityRequirementObject});
+  })
+  .catch((err) => {
+    next(err);
+  });
 };
