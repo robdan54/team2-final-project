@@ -72,9 +72,10 @@ exports.sendCharityRequirement = (req, res, next) => {
 exports.deleteCharityRequest = (req, res, next) => {
   const { request_id } = req.params;
 
-  Promise.all([checkCharityRequestExists(request_id), removeCharityRequest(request_id)])
+  checkCharityRequestExists(request_id)
+    .then((removeCharityRequest(request_id)))
     .then(() => {
-      res.status(204).end();
+      res.sendStatus(204);
     })
     .catch(next);
 };
