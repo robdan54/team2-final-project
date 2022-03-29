@@ -79,6 +79,7 @@ exports.updateCharityRequirement = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
 
 exports.deleteCharityRequest = (req, res, next) => {
   const { request_id } = req.params;

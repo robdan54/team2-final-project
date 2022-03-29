@@ -61,4 +61,3 @@ exports.patchCharityRequirement = (charity_id, requirement) => {
 };
 
 exports.removeCharityRequest = (request_id) => db.query('DELETE FROM charity_reqs where request_id = $1;', [request_id]);
-
