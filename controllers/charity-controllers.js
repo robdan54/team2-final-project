@@ -6,7 +6,9 @@ const {
   verifyCharityInfo,
   fetchCharityRequirements,
   postCharityRequirement,
+  removeCharityRequest,
 } = require('../models/charity-models');
+const { checkCharityRequestExists } = require('../models/utils');
 
 // handles the get charities endpoint
 
@@ -65,4 +67,14 @@ exports.sendCharityRequirement = (req, res, next) => {
     .catch((err) => {
       next(err);
     });
+};
+
+exports.deleteCharityRequest = (req, res, next) => {
+  const { request_id } = req.params;
+
+  Promise.all([checkCharityRequestExists(request_id), removeCharityRequest(request_id)])
+    .then(() => {
+      res.status(204).end();
+    })
+    .catch(next);
 };
