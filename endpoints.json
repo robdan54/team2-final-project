@@ -4,57 +4,276 @@
     },
 
     "GET /api/donors" : {
-        "description": "serves an array of all donor users including usernames and donator_ids. Other fields which could be sent back include email_address and address"
+        "description": "serves an array of all donor users including usernames and donator_ids. Other fields which could be sent back include email_address and address",
+        "example Response": {
+            "donors": [
+                {
+            "username": "TestUser1d",
+            "donator_id": 1
+                }
+            ]
+        }
+    },
+    
+    "GET /api/donors/:donator_id": {
+        "description": "responds with a single donator object",
+        "example Request": "GET /api/donors/6",
+        "example Response": {
+            "donor" : {
+                "donator_id": 6,
+                "username": "Bryn",
+                "email_address": "bryn@donor.com",
+                "address": "9 Pencarrow Close, Manchester, m20 2ps",
+                "lat": 53.41965103149414,
+                "lng": -2.2460200786590576
+            }
+        }
     },
 
     "POST /api/donors": {
         "description": "returns the new donor user account that has been posted",
-        "exampleInput": {
+        "example Request Body": {
             "username": "TestUserForTesting",
             "password": "TestPasswordForTesting",
             "address": "1 test street, test town, testingshire, TE57 1NG",
             "email_address": "testEmail@testing.test"
         },
-        "exampleResponse": {
-            "donator_id": 6,
-            "username": "TestUserForTesting",
-            "password": "TestPasswordForTesting",
-            "address": "1 test street, test town, testingshire, TE57 1NG",
-            "email_address": "testEmail@testing.test"
+        "example Response": {
+            "donor": {
+                "donator_id": 6,
+                "username": "TestUserForTesting",
+                "password": "$2b$04$Fb4VWS8.KPjbNoPozbiU.uxvWjLa41Lsv2anOWnUVtyd8dnCxPoPe",
+                "email_address": "testEmail@testing.test",
+                "address": "1 test street, test town, testingshire, TE57 1NG",
+                "lat": -34.119869232177734,
+                "lng": 18.87602996826172
+            }            
         }
     },
 
     "GET /api/charities" : {
-        "description": "serves an array of all charity users including charity_id, charity_name, address, charity_website, email_address, lat, lng",
-        "exampleResponse": {
+        "description": "serves an array of all charity users",
+        "example Response": {
+            "charities": [
+                {
             "charity_id": 1,
             "charity_name": "Charity 1d",
             "address": "1 charity road, location1, A666AAd",
             "charity_website": "testcharitywebsite1d",
             "email_address": "testEmail1d",
             "lat": 53.804235,
-            "lng": -1.550362
+            "lng": -1.550362,
+            "distance": 389
+                }
+            ]
+        }
+    },
+
+    "GET /api/charities/:charity_id": {
+        "description": "responds with a single charity object",
+        "example Request": "GET /api/charities/1",
+        "example Response": {
+            "charity" : {
+                "charity_id": 1,
+                "charity_name": "Charity 1",
+                "address": "1 charity road, location1, A666AA",
+                "charity_website": "testcharitywebsite1",
+                "email_address": "testEmail1",
+                "lat": 53.804235,
+                "lng": -1.550362
             }
+        }
     },
 
     "POST /api/charities": {
         "description": "returns the new charity user account that has been posted",
-        "exampleInput": {
+        "example Request Body": {
             "charity_name": "CharityTestName",
             "address": "1 test street, test town, testingshire, TE57 1NG",
             "charity_website": "www.iamacharity.com",
-            "charity_username": "TestUserForTesting",
             "password": "TestPasswordForTesting",
             "email_address": "testEmail@testing.test"
         },
-        "exampleResponse": {
-            "charity_id": 6,
-            "charity_name": "CharityTestName",
-            "address": "1 test street, test town, testingshire, TE57 1NG",
-            "charity_website": "www.iamacharity.com",
-            "charity_username": "TestUserForTesting",
-            "password": "TestPasswordForTesting",
-            "email_address": "testEmail@testing.test"
+        "example Response": {
+            "charity" : {
+                "charity_id": 6,
+                "charity_name": "CharityTestName",
+                "address": "1 test street, test town, testingshire, TE57 1NG",
+                "charity_website": "www.iamacharity.com",
+                "password": "$2b$04$D36oG0Hj8f.lVYmK8ZW4ru8Hkb7nkXrqHHmFlzg4f9sv8NQX.dPt6",
+                "email_address": "testEmail@testing.test",
+                "lat": -34.119869232177734,
+                "lng": 18.87602996826172
+            }
+        }
+    },
+
+    "POST /api/donors/signin": {
+        "description": "allows a donor to sign in and returns the logged in donator_id and accessToken",
+        "example Request Body": {
+            "email_address": "testemail1",
+           "password": "Testuserpassword1"
+        },
+        "example Response": {
+            "donator_id": 1,
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkb25hdG9yX2lkIjoxLCJpYXQiOjE2NDg1ODkwNTUsImV4cCI6MTY0ODY3NTQ1NX0._ho3NYIEMMNRI3fpyc65YuhMmV-Ia3RwPhFeg1h4gbU"
+        }
+    },
+
+    "POST /api/charities/signin": {
+        "description": "allows a charity to sign in and returns the logged in charity_id and accessToken",
+        "example Request Body": {
+            "email_address": "testEmail1",
+            "password": "TestCharityPassword1"
+        },
+        "example Response": {
+            "charity_id": 1,
+            "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaGFyaXR5X2lkIjoxLCJpYXQiOjE2NDg1ODkzMjEsImV4cCI6MTY0ODY3NTcyMX0.gNF7-Z8UXQ3jJLBlV93Hm26MC1IXioBjrZlYZtv1Iq0"  
+        }
+    },
+
+    "GET /api/:charity_id/requirements": {
+        "description": "returns an array of requirements from a specified charity",
+        "important note": "currently does not return item_name, this needs to be fixed (29/03)",
+        "example Request": "GET api/1/requirements",
+        "example Response": {
+            "charityRequirements": [
+                {
+                    "request_id": 1,
+                    "charity_id": 1,
+                    "category_name": "foodd",
+                    "item_id": 1,
+                    "quantity_required": 20,
+                    "urgent": false,
+                    "created_at": "2022-03-29T10:31:38.558Z"
+                },
+                {
+                    "request_id": 2,
+                    "charity_id": 1,
+                    "category_name": "furnitured",
+                    "item_id": 5,
+                    "quantity_required": 5,
+                    "urgent": false,
+                    "created_at": "2022-03-29T10:31:38.558Z"
+                }
+            ]
+        }
+    },
+
+    "POST api/:charity_id/requirements": {
+        "description": "returns the new charity requirement that has been posted",
+        "example Request Body": {
+            "category_name": "food",
+            "item_id": "1",
+            "quantity_required": "200"
+        },
+        "example Response": {
+            "charityRequirementObject": {
+                "request_id": 8,
+                "charity_id": 1,
+                "category_name": "food",
+                "item_id": 1,
+                "quantity_required": 200,
+                "urgent": false,
+                "created_at": "2022-03-29T22:06:31.651Z"
+              }
+        }
+    },
+
+    "DELETE api/requirements/:request_id": {
+        "description": "deletes the specified request_id from the charity_reqs table",
+        "example Request": "DELETE api/requirements/1",
+        "example Response": "Status code 204, no response"
+    },
+
+    "PATCH api/:charity_id/requirements": {
+        "description": "Adds the quantity required provided in the body to the quantity_required stored in the charity_reqs table - returns the updated record",
+        "Important Note": "When adjusting down figures, remember to submit a negative number in the patch request body",
+        "Original Record" : {
+            "request_id": 1,
+            "charity_id": 1,
+            "category_name": "food",
+            "item_id": 1,
+            "quantity_required": 20,
+            "urgent": false,
+            "created_at": "2022-03-29 23:06:32.165822"
+        },
+        "example Request Body": {
+            "request_id": "1",
+            "quantity_required": "100"
+        },
+        "example Response": {
+            "charityRequirementObject": {
+                "request_id": 1,
+                "charity_id": 1,
+                "category_name": "food",
+                "item_id": 1,
+                "quantity_required": 120,
+                "urgent": false,
+                "created_at": "2022-03-29 23:06:32.165822"
+            }
+        }
+    },
+
+    "GET api/:donator_id/donations": {
+        "description": "returns an array of available items from a specified donator",
+        "example Request": "GET api/1/donations",
+        "example Response": {
+            "donatorDonations": [
+                {
+                    "donation_id": 1,
+                    "donator_id": 1,
+                    "category_name": "foodd",
+                    "item_id": 2,
+                    "quantity_available": 15,
+                    "created_at": "2022-03-29T10:31:38.558Z",
+                    "item_name": "soupd"
+                },
+                {
+                    "donation_id": 2,
+                    "donator_id": 1,
+                    "category_name": "foodd",
+                    "item_id": 1,
+                    "quantity_available": 15,
+                    "created_at": "2022-03-29T10:31:38.558Z",
+                    "item_name": "cereald"
+                }
+            ]
+        }
+    },
+
+    "POST api/:donator_id/donations": "In code review",
+
+    "DELETE api/donations/:donation_id": {
+        "description": "deletes the specified donation_id from the donator_items table",
+        "example Request": "DELETE api/donations/1",
+        "example Response": "Status code 204, no response"
+    },
+
+    "PATCH api/:donor_id/donations": {
+        "description": "Adds the quantity required provided in the body to the quantity_available stored in the donator_items table - returns the updated record",
+        "Important Notes": "When adjusting down figures, remember to submit a negative number in the patch request body. Also, endpoint currently uses donor_id, this will be refactored to donator_id (29/03)",
+        "Original Record" : {
+            "donation_id": 1,
+            "donator_id": 1,
+            "category_name": "food",
+            "item_id": 2,
+            "quantity_required": 20,
+            "created_at": "2022-03-29 23:06:32.165886"
+        },
+        "example Request Body": {
+            "donation_id": "1",
+            "quantity_available": "5"
+        },
+        "example Response": {
+            "donatorDonationsObject": {
+                "donation_id": 1,
+                "donator_id": 1,
+                "category_name": "foodd",
+                "item_id": 2,
+                "quantity_available": 25,
+                "created_at": "2022-03-29 23:06:32.165886"
+            }
         }
     }
 }
