@@ -224,7 +224,7 @@ describe('/api/charities', () => {
         });
       }));
   });
-  
+
   describe('POST', () => {
     const testCharity = {
       charity_name: 'CharityTestName',
@@ -373,7 +373,7 @@ describe('api/donations', () => {
         expect(response.body.msg).toBe('Not found - donator ID doesn\'t exist');
       }));
   });
-  
+
   describe('POST', () => {
     const testRequest = {
       category_name: 'food',
@@ -451,7 +451,7 @@ describe('/api/:charity_id/requirements', () => {
         }]);
       }));
   });
-  
+
   describe('POST', () => {
     const testRequest = {
       category_name: 'food',
