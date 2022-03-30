@@ -38,7 +38,7 @@ const createTables = async () => {
   await db.query(`
   CREATE TABLE charity_reqs (
     request_id SERIAL PRIMARY KEY,
-    charity_id INT NOT NULL REFERENCES charities_users(charity_id),
+    charity_id INT NOT NULL REFERENCES charities_users(charity_id) ON DELETE CASCADE,
     category_name VARCHAR NOT NULL REFERENCES categories(category_name),
     item_id INT NOT NULL REFERENCES items(item_id),
     quantity_required INT NOT NULL,
@@ -51,7 +51,7 @@ const createTables = async () => {
     donator_id INT NOT NULL REFERENCES donators_users(donator_id),
     category_name VARCHAR NOT NULL REFERENCES categories(category_name),
     item_id INT NOT NULL REFERENCES items(item_id),
-    charity_id INT NOT NULL REFERENCES charities_users(charity_id),
+    charity_id INT NOT NULL REFERENCES charities_users(charity_id) ON DELETE CASCADE,
     quantity_available INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
   )`);
