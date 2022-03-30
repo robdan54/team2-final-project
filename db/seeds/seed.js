@@ -94,10 +94,10 @@ const seed = async ({
   const requestPromise = db.query(insertRequestQueryStr).then((result) => result.rows);
 
   const insertDonationsQueryStr = format(
-    'INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available) VALUES %L RETURNING *;',
+    'INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available, charity_id) VALUES %L RETURNING *;',
     donatorItemsData.map(({
-      donator_id, categoryName, item_id, quantityAvailable,
-    }) => [donator_id, categoryName, item_id, quantityAvailable]),
+      donator_id, categoryName, item_id, quantityAvailable, charity_id,
+    }) => [donator_id, categoryName, item_id, quantityAvailable, charity_id]),
   );
 
   const donationsPromise = db.query(insertDonationsQueryStr).then((result) => result.rows);

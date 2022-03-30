@@ -366,7 +366,7 @@ describe('/api/charities/:charity_id', () => {
 });
 
 // DONOR DONATION TESTS
-describe('api/donations', () => {
+describe('api/:donator_id/donations', () => {
   describe('GET', () => {
     test('Status (200), responds with an array of donator donations', () => request(app)
       .get('/api/4/donations')
@@ -382,6 +382,7 @@ describe('api/donations', () => {
               quantity_available: expect.any(Number),
               created_at: expect.any(String),
               item_name: expect.any(String),
+              charity_name: expect.any(String),
             }),
           );
         });
@@ -399,10 +400,11 @@ describe('api/donations', () => {
       category_name: 'food',
       item_id: 1,
       quantity_available: 10,
+      charity_id: 1,
     };
     test('Status (201), posts a new donation', () => request(app)
       .post('/api/1/donations')
-      .send(testRequest)
+      .send(testRequest).expect(201)
       .then((response) => {
         expect(response.body.donatorDonationObject).toBeInstanceOf(Object);
         expect(response.body.donatorDonationObject).toEqual(expect.objectContaining({
@@ -423,7 +425,7 @@ describe('api/donations', () => {
     };
     test('status(200), update quantity of the donor donations', () => request(app)
       .patch('/api/1/donations')
-      .send(testRequest)
+      .send(testRequest).expect(200)
       .then((response) => {
         expect(response.body.donatorDonationsObject).toBeInstanceOf(Object);
         expect(response.body.donatorDonationsObject).toEqual(expect.objectContaining({
@@ -480,7 +482,7 @@ describe('/api/:charity_id/requirements', () => {
     };
     test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
       .post('/api/1/requirements')
-      .send(testRequest)
+      .send(testRequest).expect(201)
       .then((response) => {
         expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
         expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
@@ -502,7 +504,7 @@ describe('/api/:charity_id/requirements', () => {
     };
     test('Status(200), update quantity of the charity requirement', () => request(app)
       .patch('/api/1/requirements')
-      .send(testRequest)
+      .send(testRequest).expect(200)
       .then((response) => {
         expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
         expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
@@ -529,49 +531,4 @@ describe('/api/:charity_id/requirements', () => {
         expect(response.body.msg).toBe('Not found - request ID doesn\'t exist');
       }));
   });
-});
-
-
-// Donor donations
-describe('POST', () => {
-  const testRequest = {
-    category_name: 'food',
-    item_id: 1,
-    quantity_available: 10,
-  };
-  test('Status (201), posts a new donation', () => request(app)
-    .post('/api/1/donations')
-    .send(testRequest)
-    .then((response) => {
-      expect(response.body.donatorDonationObject).toBeInstanceOf(Object);
-      expect(response.body.donatorDonationObject).toEqual(expect.objectContaining({
-        donation_id: 11,
-        donator_id: 1,
-        category_name: 'food',
-        item_id: 1,
-        quantity_available: 10,
-        created_at: expect.any(String),
-      }));
-    }));
-});
-
-describe('PATCH', () => {
-  const testRequest = {
-    donation_id: '1',
-    quantity_available: '5',
-  };
-  test('status(200), update quantity of the donor donations', () => request(app)
-    .patch('/api/1/donations')
-    .send(testRequest)
-    .then((response) => {
-      expect(response.body.donatorDonationsObject).toBeInstanceOf(Object);
-      expect(response.body.donatorDonationsObject).toEqual(expect.objectContaining({
-        quantity_available: 20,
-        donation_id: 1,
-        donator_id: 1,
-        category_name: 'food',
-        item_id: 2,
-        created_at: expect.any(String),
-      }));
-    }));
 });

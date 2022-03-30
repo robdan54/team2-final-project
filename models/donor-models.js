@@ -51,9 +51,9 @@ exports.fetchDonorById = (donator_id) => db.query('SELECT donator_id, username, 
 // POST A DONATION
 
 exports.postDonation = (donator_id, donation) => {
-  const { category_name, item_id, quantity_available } = donation;
+  const { category_name, item_id, quantity_available, charity_id } = donation;
 
-  return db.query('INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available) VALUES ($1, $2, $3, $4) RETURNING *;', [donator_id, category_name, item_id, quantity_available])
+  return db.query('INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available, charity_id) VALUES ($1, $2, $3, $4, $5) RETURNING *;', [donator_id, category_name, item_id, quantity_available, charity_id])
     .then((result) => result.rows[0]);
 };
 
@@ -69,5 +69,5 @@ exports.patchDonations = (donator_id, requirement) => {
 exports.removeDonorDonation = (donation_id) => db.query('DELETE FROM donator_items where donation_id = $1;', [donation_id]);
 
 exports.fetchDonorDonations = (donator_id) => db
-  .query('SELECT * FROM donator_items JOIN items ON donator_items.item_id = items.item_id WHERE donator_id = $1;', [donator_id])
+  .query('SELECT * FROM donator_items JOIN items ON donator_items.item_id = items.item_id JOIN charities_users ON donator_items.charity_id = charities_users.charity_id WHERE donator_id = $1;', [donator_id])
   .then((results) => results.rows);
