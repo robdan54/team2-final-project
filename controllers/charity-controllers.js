@@ -9,6 +9,7 @@ const {
   patchCharityRequirement,
   removeCharityRequest,
   fetchCharityById,
+  fetchDonorPledges,
 } = require('../models/charity-models');
 
 const { doesUserEmailExist, checkCharityRequestExists } = require('../models/utils');
@@ -99,4 +100,13 @@ exports.getCharityById = (req, res, next) => {
   const { charity_id } = req.params;
   if (!Number.parseInt(charity_id, 10)) res.status(400).send({ msg: '400 - Invalid Charity Id' });
   fetchCharityById(charity_id).then((charity) => res.status(200).send({ charity })).catch(next);
+};
+
+exports.getDonorPledges = (req, res, next) => {
+  const { charity_id } = req.params;
+  fetchDonorPledges(charity_id)
+    .then((donorPledges) => {
+      res.status(200).send({ donorPledges });
+    })
+    .catch(next);
 };
