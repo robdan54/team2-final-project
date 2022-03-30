@@ -51,6 +51,7 @@ const createTables = async () => {
     donator_id INT NOT NULL REFERENCES donators_users(donator_id),
     category_name VARCHAR NOT NULL REFERENCES categories(category_name),
     item_id INT NOT NULL REFERENCES items(item_id),
+    charity_id INT NOT NULL REFERENCES charities_users(charity_id),
     quantity_available INT NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
   )`);
