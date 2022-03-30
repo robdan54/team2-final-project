@@ -51,7 +51,9 @@ exports.fetchDonorById = (donator_id) => db.query('SELECT donator_id, username, 
 // POST A DONATION
 
 exports.postDonation = (donator_id, donation) => {
-  const { category_name, item_id, quantity_available, charity_id } = donation;
+  const {
+    category_name, item_id, quantity_available, charity_id,
+  } = donation;
 
   return db.query('INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available, charity_id) VALUES ($1, $2, $3, $4, $5) RETURNING *;', [donator_id, category_name, item_id, quantity_available, charity_id])
     .then((result) => result.rows[0]);
