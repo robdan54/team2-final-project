@@ -17,6 +17,32 @@
         }
     },
 
+    "GET /api/items/:category_id" : {
+        "description": "returns an array of all items with specified category_id",
+        "example Response": {
+            "categories": [
+                {
+                    "category_id": 1,
+                    "category_name": "food",
+                    "item_id": 1,
+                    "item_name": "cereal"
+                  },
+                  {
+                    "category_id": 1,
+                    "category_name": "food",
+                    "item_id": 2,
+                    "item_name": "soup"
+                  },
+                  {
+                    "category_id": 1,
+                    "category_name": "food",
+                    "item_id": 3,
+                    "item_name": "pasta"
+                  }    
+            ]
+        }
+    },
+
     "GET /api/donors" : {
         "description": "serves an array of all donor users including usernames and donator_ids. Other fields which could be sent back include email_address and address",
         "example Response": {
