@@ -106,7 +106,6 @@ exports.getDonorPledges = (req, res, next) => {
   const { charity_id } = req.params;
   fetchDonorPledges(charity_id)
     .then((donorPledges) => {
-      console.log(donorPledges);
       res.status(200).send({ donorPledges });
     })
     .catch(next);
