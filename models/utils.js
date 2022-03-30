@@ -30,3 +30,12 @@ exports.checkDonorDonationExists = (donation_id) => db
     }
     return rows;
   });
+
+exports.checkDonorExists = (donator_id) => db
+  .query('SELECT * FROM donators_users WHERE donator_id = $1;', [donator_id])
+  .then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: 'Not found - donator ID doesn\'t exist' });
+    }
+    return rows;
+  });
