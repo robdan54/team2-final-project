@@ -10,6 +10,7 @@ const {
   removeCharityRequest,
   fetchCharityById,
   removeCharityById,
+  fetchDonorPledges,
 } = require('../models/charity-models');
 
 const { doesUserEmailExist, checkCharityRequestExists, checkCharityIdExists } = require('../models/utils');
@@ -113,3 +114,12 @@ exports.deleteCharityById = (req, res, next) => {
     })
     .catch(next);
 }
+
+exports.getDonorPledges = (req, res, next) => {
+  const { charity_id } = req.params;
+  fetchDonorPledges(charity_id)
+    .then((donorPledges) => {
+      res.status(200).send({ donorPledges });
+    })
+    .catch(next);
+};

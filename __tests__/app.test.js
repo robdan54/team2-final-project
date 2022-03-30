@@ -538,3 +538,25 @@ describe('/api/:charity_id/requirements', () => {
       }));
   });
 });
+describe('/api/charities/donations/:charity_id', () => {
+  describe('GET', () => {
+    test('Status(200), responds with an array of donor pledges for the specified charity_id', () => request(app)
+      .get('/api/charities/donations/1')
+      .expect(200)
+      .then((response) => {
+        response.body.donorPledges.forEach((donorPledge) => {
+          expect(donorPledge).toEqual(
+            expect.objectContaining({
+              donator_id: expect.any(Number),
+              donation_id: expect.any(Number),
+              username: expect.any(String),
+              category_name: expect.any(String),
+              item_id: expect.any(Number),
+              item_name: expect.any(String),
+              quantity_available: expect.any(Number),
+            }),
+          );
+        });
+      }));
+  });
+});
