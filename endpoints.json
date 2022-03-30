@@ -134,7 +134,6 @@
 
     "GET /api/:charity_id/requirements": {
         "description": "returns an array of requirements from a specified charity",
-        "important note": "currently does not return item_name, this needs to be fixed (29/03)",
         "example Request": "GET api/1/requirements",
         "example Response": {
             "charityRequirements": [
@@ -143,6 +142,7 @@
                     "charity_id": 1,
                     "category_name": "foodd",
                     "item_id": 1,
+                    "item_name": "cereal",
                     "quantity_required": 20,
                     "urgent": false,
                     "created_at": "2022-03-29T10:31:38.558Z"
@@ -152,6 +152,7 @@
                     "charity_id": 1,
                     "category_name": "furnitured",
                     "item_id": 5,
+                    "item_name": "table",
                     "quantity_required": 5,
                     "urgent": false,
                     "created_at": "2022-03-29T10:31:38.558Z"
@@ -242,7 +243,24 @@
         }
     },
 
-    "POST api/:donator_id/donations": "In code review",
+    "POST api/:donator_id/donations": {
+        "description": "returns the new donator donation that has been posted",
+        "example Request Body": {
+            "category_name": "food",
+            "item_id": 1,
+            "quantity_available": 10
+        },
+        "example Response": {
+            "donatorDonationObject": {
+                "donation_id": 11,
+                "donator_id": 1,
+                "category_name": "food",
+                "item_id": 1,
+                "quantity_available": 10,
+                "created_at": "2022-03-30T08:57:40.362Z"
+              }
+        }
+    },
 
     "DELETE api/donations/:donation_id": {
         "description": "deletes the specified donation_id from the donator_items table",
@@ -250,9 +268,9 @@
         "example Response": "Status code 204, no response"
     },
 
-    "PATCH api/:donor_id/donations": {
+    "PATCH api/:donator_id/donations": {
         "description": "Adds the quantity required provided in the body to the quantity_available stored in the donator_items table - returns the updated record",
-        "Important Notes": "When adjusting down figures, remember to submit a negative number in the patch request body. Also, endpoint currently uses donor_id, this will be refactored to donator_id (29/03)",
+        "Important Notes": "When adjusting down figures, remember to submit a negative number in the patch request body.",
         "Original Record" : {
             "donation_id": 1,
             "donator_id": 1,
