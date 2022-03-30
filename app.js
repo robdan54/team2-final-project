@@ -58,8 +58,8 @@ app.post('/api/donors/signin', signInDonor);
 // donor donations
 
 app.get('/api/:donator_id/donations', getDonorDonations);
-app.post('/api/:donor_id/donations', sendDonation);
-app.patch('/api/:donor_id/donations', updateDonations);
+app.post('/api/:donator_id/donations', sendDonation);
+app.patch('/api/:donator_id/donations', updateDonations);
 app.delete('/api/donations/:donation_id', deleteDonorDonation);
 
 // charity routes

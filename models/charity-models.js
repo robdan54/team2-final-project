@@ -44,7 +44,7 @@ exports.verifyCharityInfo = async ({ email_address, password }) => {
 };
 
 exports.fetchCharityRequirements = (charity_id) => db
-  .query('SELECT * FROM charity_reqs WHERE charity_id = $1;', [charity_id])
+  .query('SELECT * FROM charity_reqs JOIN items ON charity_reqs.item_id = items.item_id WHERE charity_id = $1;', [charity_id])
   .then((result) => result.rows);
 
 exports.postCharityRequirement = (charity_id, requirement) => {
