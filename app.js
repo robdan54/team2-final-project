@@ -38,6 +38,8 @@ const {
 } = require('./controllers/error-controller');
 
 const { getApi } = require('./controllers/api-controllers');
+const { getCategories } = require('./controllers/category-controllers');
+const { getItems } = require('./controllers/item-controllers');
 
 const app = express();
 
@@ -52,6 +54,12 @@ app.use(express.json());
 // ALL ENDPOINTS
 app.get('/api', getApi);
 
+// CATEGORY ENDPOINTS
+app.get('/api/categories', getCategories);
+
+// ITEM ENDPOINTS
+app.get('/api/items/:category_id', getItems);
+
 // DONOR ENDPOINTS
 app.get('/api/donors', getDonors);
 app.get('/api/donors/:donator_id', getDonorById);
@@ -63,7 +71,7 @@ app.get('/api/charities', getCharities);
 app.post('/api/charities', sendCharity);
 app.post('/api/charities/signin', signInCharity);
 app.get('/api/charities/:charity_id', getCharityById);
-app.delete('/api/charities/:charity_id',deleteCharityById);
+app.delete('/api/charities/:charity_id', deleteCharityById);
 
 // DONOR DONATION ENDPOINTS
 app.get('/api/:donator_id/donations', getDonorDonations);

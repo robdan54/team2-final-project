@@ -366,8 +366,7 @@ describe('/api/charities/:charity_id', () => {
   describe('DELETE', () => {
     test('Status (204), responds with an empty response body', () => request(app)
       .delete('/api/charities/1')
-      .expect(204)
-    );
+      .expect(204));
   });
 });
 
@@ -554,6 +553,45 @@ describe('/api/charities/donations/:charity_id', () => {
               item_id: expect.any(Number),
               item_name: expect.any(String),
               quantity_available: expect.any(Number),
+            }),
+          );
+        });
+      }));
+  });
+});
+describe('/api/categories', () => {
+  describe('GET', () => {
+    test('status(200), responds with an array of categories', () => request(app)
+      .get('/api/categories')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.categories).toHaveLength(6);
+        response.body.categories.forEach((category) => {
+          expect(category).toEqual(
+            expect.objectContaining({
+              category_id: expect.any(Number),
+              category_name: expect.any(String),
+            }),
+          );
+        });
+      }));
+  });
+});
+
+describe('/api/items/:category_id', () => {
+  describe('GET', () => {
+    test('status(200), responds with an array of items', () => request(app)
+      .get('/api/items/1')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.items).toHaveLength(3);
+        response.body.items.forEach((item) => {
+          expect(item).toEqual(
+            expect.objectContaining({
+              category_id: expect.any(Number),
+              category_name: expect.any(String),
+              item_id: expect.any(Number),
+              item_name: expect.any(String),
             }),
           );
         });
