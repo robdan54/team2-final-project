@@ -104,16 +104,16 @@ exports.getCharityById = (req, res, next) => {
 };
 
 exports.deleteCharityById = (req, res, next) => {
-  const {charity_id} = req.params;
+  const { charity_id } = req.params;
   checkCharityIdExists(charity_id)
     .then(() => {
-      removeCharityById(charity_id)
+      removeCharityById(charity_id);
     })
     .then(() => {
-      res.sendStatus(204)
+      res.sendStatus(204);
     })
     .catch(next);
-}
+};
 
 exports.getDonorPledges = (req, res, next) => {
   const { charity_id } = req.params;
