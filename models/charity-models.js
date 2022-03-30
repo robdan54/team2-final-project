@@ -67,3 +67,5 @@ exports.fetchCharityById = (charity_id) => db.query('SELECT charity_id, charity_
   if (rows.length !== 1) return Promise.reject({ status: 404, msg: '404 - Charity Not Found' });
   return rows[0];
 });
+
+exports.fetchDonorPledges = (charity_id) => db.query('SELECT donator_items.donator_id, donation_id, username, donator_items.category_name, donator_items.item_id, items.item_name, quantity_available, charity_id FROM donator_items JOIN donators_users ON donators_users.donator_id = donator_items.donator_id JOIN items ON donator_items.item_id = items.item_id WHERE charity_id = $1;', [charity_id]).then((result) => result.rows);

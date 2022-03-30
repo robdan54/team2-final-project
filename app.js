@@ -25,6 +25,7 @@ const {
   updateCharityRequirement,
   deleteCharityRequest,
   getCharityById,
+  getDonorPledges,
 } = require('./controllers/charity-controllers');
 
 // Error handling controllers
@@ -71,6 +72,8 @@ app.get('/api/:charity_id/requirements', getCharityRequirements);
 app.post('/api/:charity_id/requirements', sendCharityRequirement);
 app.patch('/api/:charity_id/requirements', updateCharityRequirement);
 app.delete('/api/requirements/:request_id', deleteCharityRequest);
+
+app.get('/api/charities/donations/:charity_id', getDonorPledges);
 
 // ERROR HANDLING
 app.all('/*', (req, res) => {
