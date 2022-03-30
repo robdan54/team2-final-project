@@ -13,6 +13,7 @@ beforeEach(() => seed(testData));
 
 afterAll(() => db.end());
 
+// DONOR TESTS
 describe('/api/donors', () => {
   describe('GET', () => {
     test('status(200), responds with an array of donors', () => request(app)
@@ -99,6 +100,95 @@ describe('/api/donors', () => {
     });
   });
 });
+
+describe('/api/donors/signin', () => {
+  describe('POST', () => {
+    test('should not be able to signin without a password and username', () => request(app)
+      .post('/api/donors/signin')
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          msg: 'please provide a username and password',
+        });
+      }));
+    test('should respond with a JSON webToken', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'Testuserpassword1',
+      })
+      .expect(202)
+      .then(({ body }) => {
+        expect(body).toEqual(
+          expect.objectContaining({
+            accessToken: expect.any(String),
+          }),
+        );
+      }));
+    test('should not token with invalid passwords', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'invalidpassword',
+      })
+      .expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid password' });
+        expect(body).toEqual(
+          expect.not.objectContaining({ accessToken: expect.any(String) }),
+        );
+      }));
+    test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
+      email_address: 'not an email address',
+      password: 'Testuserpassword1',
+    }).expect(400)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: 'invalid username' });
+      }));
+  });
+});
+
+describe('/api/donors/:donator_id', () => {
+  describe('GET', () => {
+    test('should respond with a single donator object if given a valid token', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'Testuserpassword1',
+      }).then(({ body: { accessToken } }) => request(app).get('/api/donors/1').set({ 'x-access-token': accessToken }).expect(200)
+        .then(({ body: { donor } }) => expect(donor).toEqual({
+          donator_id: 1,
+          username: 'TestUser1',
+          email_address: 'testemail1',
+          address: '1 roady road, Walmley, A111AA',
+          lat: 53.804235,
+          lng: -1.550362,
+        }))));
+    test('should respond 404 donator not found when given an incorrect id', () => request(app).get('/api/donors/99999').expect(404).then(({ body: { msg } }) => {
+      expect(msg).toBe('404 - Donator Not Found');
+    }));
+    test('should respond 400 Invalid Donator Id if given an invalid Id format', () => request(app).get('/api/donors/notAnId').expect(400).then(({ body: { msg } }) => {
+      expect(msg).toBe('400 - Invalid Donator Id');
+    }));
+    test('should respond 401 - Unathorized Token if given a token not signed with the correct secret', () => request(app).get('/api/donors/1').set({ 'x-access-token': 'NotAnAuthorizedToken' }).expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: '401 - Unauthorized Token' });
+      }));
+    test('should respond 403 - No Access Token Provided if not given a token on request', () => request(app).get('/api/donors/1').expect(403).then(({ body }) => {
+      expect(body).toEqual({ msg: 'No Access Token Provided' });
+    }));
+    test('should respond 403 - Token and User Id do not match if given a valid token but for a different user', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'Testuserpassword1',
+      }).then(({ body: { accessToken } }) => request(app).get('/api/donors/2').set({ 'x-access-token': accessToken }).expect(403)
+        .then(({ body }) => expect(body).toEqual({ msg: 'Token and User Id do not match' }))));
+  });
+});
+
+// CHARITY TESTS
 describe('/api/charities', () => {
   describe('GET', () => {
     test('status(200), responds with an array of charities', () => request(app)
@@ -154,6 +244,7 @@ describe('/api/charities', () => {
         });
       }));
   });
+
   describe('POST', () => {
     const testCharity = {
       charity_name: 'CharityTestName',
@@ -205,54 +296,6 @@ describe('/api/charities', () => {
           expect(charities).toHaveLength(6);
         })));
     });
-  });
-});
-
-describe('/api/donors/signin', () => {
-  describe('POST', () => {
-    test('should not be able to signin without a password and username', () => request(app)
-      .post('/api/donors/signin')
-      .send({})
-      .expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({
-          msg: 'please provide a username and password',
-        });
-      }));
-    test('should respond with a JSON webToken', () => request(app)
-      .post('/api/donors/signin')
-      .send({
-        email_address: 'testemail1',
-        password: 'Testuserpassword1',
-      })
-      .expect(202)
-      .then(({ body }) => {
-        expect(body).toEqual(
-          expect.objectContaining({
-            accessToken: expect.any(String),
-          }),
-        );
-      }));
-    test('should not token with invalid passwords', () => request(app)
-      .post('/api/donors/signin')
-      .send({
-        email_address: 'testemail1',
-        password: 'invalidpassword',
-      })
-      .expect(401)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: 'invalid password' });
-        expect(body).toEqual(
-          expect.not.objectContaining({ accessToken: expect.any(String) }),
-        );
-      }));
-    test('should respond with a message when the email address is incorrect', () => request(app).post('/api/donors/signin').send({
-      email_address: 'not an email address',
-      password: 'Testuserpassword1',
-    }).expect(400)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: 'invalid username' });
-      }));
   });
 });
 
@@ -322,120 +365,7 @@ describe('/api/charities/:charity_id', () => {
   });
 });
 
-describe('/api/donors/:donator_id', () => {
-  describe('GET', () => {
-    test('should respond with a single donator object if given a valid token', () => request(app)
-      .post('/api/donors/signin')
-      .send({
-        email_address: 'testemail1',
-        password: 'Testuserpassword1',
-      }).then(({ body: { accessToken } }) => request(app).get('/api/donors/1').set({ 'x-access-token': accessToken }).expect(200)
-        .then(({ body: { donor } }) => expect(donor).toEqual({
-          donator_id: 1,
-          username: 'TestUser1',
-          email_address: 'testemail1',
-          address: '1 roady road, Walmley, A111AA',
-          lat: 53.804235,
-          lng: -1.550362,
-        }))));
-    test('should respond 404 donator not found when given an incorrect id', () => request(app).get('/api/donors/99999').expect(404).then(({ body: { msg } }) => {
-      expect(msg).toBe('404 - Donator Not Found');
-    }));
-    test('should respond 400 Invalid Donator Id if given an invalid Id format', () => request(app).get('/api/donors/notAnId').expect(400).then(({ body: { msg } }) => {
-      expect(msg).toBe('400 - Invalid Donator Id');
-    }));
-    test('should respond 401 - Unathorized Token if given a token not signed with the correct secret', () => request(app).get('/api/donors/1').set({ 'x-access-token': 'NotAnAuthorizedToken' }).expect(401)
-      .then(({ body }) => {
-        expect(body).toEqual({ msg: '401 - Unauthorized Token' });
-      }));
-    test('should respond 403 - No Access Token Provided if not given a token on request', () => request(app).get('/api/donors/1').expect(403).then(({ body }) => {
-      expect(body).toEqual({ msg: 'No Access Token Provided' });
-    }));
-    test('should respond 403 - Token and User Id do not match if given a valid token but for a different user', () => request(app)
-      .post('/api/donors/signin')
-      .send({
-        email_address: 'testemail1',
-        password: 'Testuserpassword1',
-      }).then(({ body: { accessToken } }) => request(app).get('/api/donors/2').set({ 'x-access-token': accessToken }).expect(403)
-        .then(({ body }) => expect(body).toEqual({ msg: 'Token and User Id do not match' }))));
-  });
-});
-
-// Charity Id requirements
-describe('/api/:charity_id/requirements', () => {
-  describe('GET', () => {
-    test('Status (200), responds with an array of charity requirements', () => request(app)
-      .get('/api/4/requirements')
-      .expect(200)
-      .then((response) => {
-        expect(response.body.charityRequirements).toBeInstanceOf(Array);
-        expect(response.body.charityRequirements).toEqual([{
-          category_name: 'food',
-          charity_id: 4,
-          created_at: expect.any(String),
-          item_id: 2,
-          quantity_required: 200,
-          request_id: 6,
-          urgent: false,
-        }]);
-      }));
-  });
-  describe('POST', () => {
-    const testRequest = {
-      category_name: 'food',
-      item_id: '1',
-      quantity_required: '200',
-    };
-    test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
-      .post('/api/1/requirements')
-      .send(testRequest)
-      .then((response) => {
-        expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
-        expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
-          category_name: 'food',
-          charity_id: 1,
-          created_at: expect.any(String),
-          item_id: 1,
-          quantity_required: 200,
-          request_id: expect.any(Number),
-          urgent: false,
-        }));
-      }));
-  });
-  describe('DELETE', () => {
-    // eslint-disable-next-line jest/expect-expect
-    test('Status(204), responds with an empty response body', () => request(app)
-      .delete('/api/requirements/1')
-      .expect(204));
-    test('status(404), responds with an error if request_id doesn\'t exist', () => request(app)
-      .delete('/api/requirements/9999')
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).toBe('Not found - request ID doesn\'t exist');
-      }));
-  });
-  describe('PATCH', () => {
-    const testRequest = {
-      request_id: '1',
-      quantity_required: '100',
-    };
-    test('Status(200), update quantity of the charity requirement', () => request(app)
-      .patch('/api/1/requirements')
-      .send(testRequest)
-      .then((response) => {
-        expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
-        expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
-          category_name: 'food',
-          charity_id: 1,
-          created_at: expect.any(String),
-          item_id: 1,
-          quantity_required: 120,
-          request_id: 1,
-          urgent: false,
-        }));
-      }));
-  });
-});
+// DONOR DONATION TESTS
 describe('api/donations', () => {
   describe('GET', () => {
     test('Status (200), responds with an array of donator donations', () => request(app)
@@ -463,6 +393,50 @@ describe('api/donations', () => {
         expect(response.body.msg).toBe('Not found - donator ID doesn\'t exist');
       }));
   });
+
+  describe('POST', () => {
+    const testRequest = {
+      category_name: 'food',
+      item_id: 1,
+      quantity_available: 10,
+    };
+    test('Status (201), posts a new donation', () => request(app)
+      .post('/api/1/donations')
+      .send(testRequest)
+      .then((response) => {
+        expect(response.body.donatorDonationObject).toBeInstanceOf(Object);
+        expect(response.body.donatorDonationObject).toEqual(expect.objectContaining({
+          donation_id: 11,
+          donator_id: 1,
+          category_name: 'food',
+          item_id: 1,
+          quantity_available: 10,
+          created_at: expect.any(String),
+        }));
+      }));
+  });
+
+  describe('PATCH', () => {
+    const testRequest = {
+      donation_id: '1',
+      quantity_available: '5',
+    };
+    test('status(200), update quantity of the donor donations', () => request(app)
+      .patch('/api/1/donations')
+      .send(testRequest)
+      .then((response) => {
+        expect(response.body.donatorDonationsObject).toBeInstanceOf(Object);
+        expect(response.body.donatorDonationsObject).toEqual(expect.objectContaining({
+          quantity_available: 20,
+          donation_id: 1,
+          donator_id: 1,
+          category_name: 'food',
+          item_id: 2,
+          created_at: expect.any(String),
+        }));
+      }));
+  });
+
   describe('DELETE', () => {
     // eslint-disable-next-line jest/expect-expect
     test('Status(204), responds with an empty response body', () => request(app)
@@ -476,6 +450,87 @@ describe('api/donations', () => {
       }));
   });
 });
+
+// CHARITY REQUIREMENTS TESTS
+describe('/api/:charity_id/requirements', () => {
+  describe('GET', () => {
+    test('Status (200), responds with an array of charity requirements', () => request(app)
+      .get('/api/4/requirements')
+      .expect(200)
+      .then((response) => {
+        expect(response.body.charityRequirements).toBeInstanceOf(Array);
+        expect(response.body.charityRequirements).toEqual([{
+          category_name: 'food',
+          charity_id: 4,
+          created_at: expect.any(String),
+          item_id: 2,
+          quantity_required: 200,
+          request_id: 6,
+          urgent: false,
+          item_name: expect.any(String),
+        }]);
+      }));
+  });
+
+  describe('POST', () => {
+    const testRequest = {
+      category_name: 'food',
+      item_id: '1',
+      quantity_required: '200',
+    };
+    test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
+      .post('/api/1/requirements')
+      .send(testRequest)
+      .then((response) => {
+        expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
+        expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
+          category_name: 'food',
+          charity_id: 1,
+          created_at: expect.any(String),
+          item_id: 1,
+          quantity_required: 200,
+          request_id: expect.any(Number),
+          urgent: false,
+        }));
+      }));
+  });
+
+  describe('PATCH', () => {
+    const testRequest = {
+      request_id: '1',
+      quantity_required: '100',
+    };
+    test('Status(200), update quantity of the charity requirement', () => request(app)
+      .patch('/api/1/requirements')
+      .send(testRequest)
+      .then((response) => {
+        expect(response.body.charityRequirementObject).toBeInstanceOf(Object);
+        expect(response.body.charityRequirementObject).toEqual(expect.objectContaining({
+          category_name: 'food',
+          charity_id: 1,
+          created_at: expect.any(String),
+          item_id: 1,
+          quantity_required: 120,
+          request_id: 1,
+          urgent: false,
+        }));
+      }));
+  });
+
+  describe('DELETE', () => {
+    // eslint-disable-next-line jest/expect-expect
+    test('Status(204), responds with an empty response body', () => request(app)
+      .delete('/api/requirements/1')
+      .expect(204));
+    test('status(404), responds with an error if request_id doesn\'t exist', () => request(app)
+      .delete('/api/requirements/9999')
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe('Not found - request ID doesn\'t exist');
+      }));
+  });
+});
+
 
 // Donor donations
 describe('POST', () => {

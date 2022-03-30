@@ -59,7 +59,7 @@ exports.postDonation = (donator_id, donation) => {
 
 // PATCH A DONATION
 
-exports.patchDonations = (requirement) => {
+exports.patchDonations = (donator_id, requirement) => {
   const { donation_id, quantity_available } = requirement;
 
   return db.query('UPDATE donator_items SET quantity_available = quantity_available + $1 WHERE donation_id = $2 RETURNING *', [quantity_available, donation_id])

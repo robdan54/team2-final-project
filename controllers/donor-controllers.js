@@ -54,8 +54,8 @@ exports.signInDonor = (req, res, next) => {
 // update the donations
 
 exports.sendDonation = (req, res, next) => {
-  const { donor_id } = req.params;
-  postDonation(donor_id, req.body)
+  const { donator_id } = req.params;
+  postDonation(donator_id, req.body)
     .then((donatorDonationObject) => {
       res.status(201).send({ donatorDonationObject });
     })
@@ -65,7 +65,8 @@ exports.sendDonation = (req, res, next) => {
 };
 
 exports.updateDonations = (req, res, next) => {
-  patchDonations(req.body)
+  const { donator_id } = req.params;
+  patchDonations(donator_id, req.body)
     .then((donatorDonationsObject) => {
       res.status(200).send({ donatorDonationsObject });
     })
