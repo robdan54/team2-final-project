@@ -1,72 +1,72 @@
 module.exports = [
   {
 
-    itemName: 'cereald',
-    categoryName: 'foodd',
+    itemName: 'cereal',
+    categoryName: 'food',
   },
   {
 
-    itemName: 'soupd',
-    categoryName: 'foodd',
+    itemName: 'soup',
+    categoryName: 'food',
   },
   {
 
-    itemName: 'pastad',
-    categoryName: 'foodd',
+    itemName: 'pasta',
+    categoryName: 'food',
   },
   {
 
-    itemName: 'tabled',
-    categoryName: 'furnitured',
+    itemName: 'table',
+    categoryName: 'furniture',
   },
   {
 
-    itemName: 'chaird',
-    categoryName: 'furnitured',
+    itemName: 'chair',
+    categoryName: 'furniture',
   },
   {
 
-    itemName: 'deodorantd',
-    categoryName: 'toiletriesd',
+    itemName: 'deodorant',
+    categoryName: 'toiletries',
   },
   {
-    itemName: 'shower geld',
-    categoryName: 'toiletriesd',
+    itemName: 'shower gel',
+    categoryName: 'toiletries',
   },
   {
-    itemName: 'toothbrushd',
-    categoryName: 'toiletriesd',
+    itemName: 'toothbrush',
+    categoryName: 'toiletries',
   },
   {
-    itemName: 'soapd',
-    categoryName: 'toiletriesd',
+    itemName: 'soap',
+    categoryName: 'toiletries',
   },
   {
-    itemName: 'laundry liquid detergentd',
-    categoryName: 'household itemsd',
+    itemName: 'laundry liquid detergent',
+    categoryName: 'household items',
   },
   {
-    itemName: 'washing up liquidd',
-    categoryName: 'household itemsd',
+    itemName: 'washing up liquid',
+    categoryName: 'household items',
   },
   {
-    itemName: 'sanitary towelsd',
-    categoryName: 'feminine productsd',
+    itemName: 'sanitary towels',
+    categoryName: 'feminine products',
   },
   {
-    itemName: 'tamponsd',
-    categoryName: 'feminine productsd',
+    itemName: 'tampons',
+    categoryName: 'feminine products',
   },
   {
-    itemName: 'nappiesd',
-    categoryName: 'baby suppliesd',
+    itemName: 'nappies',
+    categoryName: 'baby supplies',
   },
   {
-    itemName: 'baby wipesd',
-    categoryName: 'baby suppliesd',
+    itemName: 'baby wipes',
+    categoryName: 'baby supplies',
   },
   {
-    itemName: 'baby foodd',
-    categoryName: 'baby suppliesd',
+    itemName: 'baby food',
+    categoryName: 'baby supplies',
   },
 ];
