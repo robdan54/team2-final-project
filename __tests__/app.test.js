@@ -577,3 +577,24 @@ describe('/api/categories', () => {
       }));
   });
 });
+
+// describe('/api/items/:category_id', () => {
+//   describe('GET', () => {
+//     test('status(200), responds with an array of items', () => request(app)
+//       .get('/api/categories/1')
+//       .expect(200)
+//       .then((response) => {
+//         expect(response.body.categories).toHaveLength(3);
+//         response.body.categories.forEach((category) => {
+//           expect(category).toEqual(
+//             expect.objectContaining({
+//               category_id: expect.any(Number),
+//               category_name: expect.any(String),
+//               item_id: expect.any(Number),
+//               item_name: expect.any(String),
+//             }),
+//           );
+//         });
+//       }));
+//   });
+// });

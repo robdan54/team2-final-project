@@ -3,6 +3,20 @@
         "description": "provides a json of all available endpoints of the api"
     },
 
+    "GET /api/categories" : {
+        "description": "returns an array of all categories",
+        "example Response": {
+            "categories": [
+                { "category_id": 1, "category_name": "food" },
+                { "category_id": 2, "category_name": "furniture" },
+                { "category_id": 3, "category_name": "toiletries" },
+                { "category_id": 4, "category_name": "household items" },
+                { "category_id": 5, "category_name": "feminine products" },
+                { "category_id": 6, "category_name": "baby supplies" }    
+            ]
+        }
+    },
+
     "GET /api/donors" : {
         "description": "serves an array of all donor users including usernames and donator_ids. Other fields which could be sent back include email_address and address",
         "example Response": {

@@ -38,7 +38,7 @@ const {
 } = require('./controllers/error-controller');
 
 const { getApi } = require('./controllers/api-controllers');
-const { getCategories } = require('./controllers/category.controllers');
+const { getCategories } = require('./controllers/category-controllers');
 
 const app = express();
 
@@ -53,9 +53,11 @@ app.use(express.json());
 // ALL ENDPOINTS
 app.get('/api', getApi);
 
-// CATEGORIES ENDPOINTS
-
+// CATEGORY ENDPOINTS
 app.get('/api/categories', getCategories);
+
+// ITEM ENDPOINTS
+app.get('/api/items/:category_id' /* func */);
 
 // DONOR ENDPOINTS
 app.get('/api/donors', getDonors);
