@@ -363,6 +363,12 @@ describe('/api/charities/:charity_id', () => {
       expect(msg).toBe('400 - Invalid Charity Id');
     }));
   });
+  describe('DELETE', () => {
+    test('Status (204), responds with an empty response body', () => request(app)
+      .delete('/api/charities/1')
+      .expect(204)
+    );
+  });
 });
 
 // DONOR DONATION TESTS

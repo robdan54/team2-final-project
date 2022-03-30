@@ -1,8 +1,9 @@
-// Cors module
+// CORS MODULE
 const cors = require('cors');
+// EXPRESS MODULE
 const express = require('express');
 
-// Donor controller functions
+// DONOR CONTROLLER FUNCTIONS
 const {
   getDonors,
   sendDonor,
@@ -15,7 +16,7 @@ const {
 
 } = require('./controllers/donor-controllers');
 
-// Charity controller functions
+// CHARITY CONTROLLER FUNCTIONS
 const {
   getCharities,
   sendCharity,
@@ -25,9 +26,10 @@ const {
   updateCharityRequirement,
   deleteCharityRequest,
   getCharityById,
+  deleteCharityById,
 } = require('./controllers/charity-controllers');
 
-// Error handling controllers
+// ERROR HANDLING FUNCTIONS
 const {
   handlesCustomErrors,
   handlesPsqlErrors,
@@ -38,7 +40,7 @@ const { getApi } = require('./controllers/api-controllers');
 
 const app = express();
 
-// middleware functions
+// MIDDLEWARE FUNCTIONS
 
 app.use(cors());
 
@@ -46,6 +48,7 @@ app.use(express.json());
 
 // ENDPOINTS
 
+// ALL ENDPOINTS
 app.get('/api', getApi);
 
 // DONOR ENDPOINTS
@@ -56,9 +59,10 @@ app.post('/api/donors/signin', signInDonor);
 
 // CHARITY ENDPOINTS
 app.get('/api/charities', getCharities);
-app.get('/api/charities/:charity_id', getCharityById);
 app.post('/api/charities', sendCharity);
 app.post('/api/charities/signin', signInCharity);
+app.get('/api/charities/:charity_id', getCharityById);
+app.delete('/api/charities/:charity_id',deleteCharityById);
 
 // DONOR DONATION ENDPOINTS
 app.get('/api/:donator_id/donations', getDonorDonations);

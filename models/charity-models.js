@@ -61,9 +61,11 @@ exports.patchCharityRequirement = (charity_id, requirement) => {
     .then((result) => result.rows[0]);
 };
 
-exports.removeCharityRequest = (request_id) => db.query('DELETE FROM charity_reqs where request_id = $1;', [request_id]);
+exports.removeCharityRequest = (request_id) => db.query('DELETE FROM charity_reqs WHERE request_id = $1;', [request_id]);
 
 exports.fetchCharityById = (charity_id) => db.query('SELECT charity_id, charity_name, address, charity_website, email_address, lat, lng FROM charities_users WHERE charity_id = $1;', [charity_id]).then(({ rows }) => {
   if (rows.length !== 1) return Promise.reject({ status: 404, msg: '404 - Charity Not Found' });
   return rows[0];
 });
+
+exports.removeCharityById = (charity_id) => db.query('DELETE FROM charities_users WHERE charity_id = $1;', [charity_id]);
