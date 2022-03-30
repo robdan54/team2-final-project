@@ -151,20 +151,40 @@ describe('/api/donors/signin', () => {
 
 describe('/api/donors/:donator_id', () => {
   describe('GET', () => {
-    test('should respond with a single donator object', () => request(app).get('/api/donors/1').expect(200).then(({ body: { donor } }) => expect(donor).toEqual({
-      donator_id: 1,
-      username: 'TestUser1',
-      email_address: 'testemail1',
-      address: '1 roady road, Walmley, A111AA',
-      lat: 53.804235,
-      lng: -1.550362,
-    })));
+    test('should respond with a single donator object if given a valid token', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'Testuserpassword1',
+      }).then(({ body: { accessToken } }) => request(app).get('/api/donors/1').set({ 'x-access-token': accessToken }).expect(200)
+        .then(({ body: { donor } }) => expect(donor).toEqual({
+          donator_id: 1,
+          username: 'TestUser1',
+          email_address: 'testemail1',
+          address: '1 roady road, Walmley, A111AA',
+          lat: 53.804235,
+          lng: -1.550362,
+        }))));
     test('should respond 404 donator not found when given an incorrect id', () => request(app).get('/api/donors/99999').expect(404).then(({ body: { msg } }) => {
       expect(msg).toBe('404 - Donator Not Found');
     }));
     test('should respond 400 Invalid Donator Id if given an invalid Id format', () => request(app).get('/api/donors/notAnId').expect(400).then(({ body: { msg } }) => {
       expect(msg).toBe('400 - Invalid Donator Id');
     }));
+    test('should respond 401 - Unathorized Token if given a token not signed with the correct secret', () => request(app).get('/api/donors/1').set({ 'x-access-token': 'NotAnAuthorizedToken' }).expect(401)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: '401 - Unauthorized Token' });
+      }));
+    test('should respond 403 - No Access Token Provided if not given a token on request', () => request(app).get('/api/donors/1').expect(403).then(({ body }) => {
+      expect(body).toEqual({ msg: 'No Access Token Provided' });
+    }));
+    test('should respond 403 - Token and User Id do not match if given a valid token but for a different user', () => request(app)
+      .post('/api/donors/signin')
+      .send({
+        email_address: 'testemail1',
+        password: 'Testuserpassword1',
+      }).then(({ body: { accessToken } }) => request(app).get('/api/donors/2').set({ 'x-access-token': accessToken }).expect(403)
+        .then(({ body }) => expect(body).toEqual({ msg: 'Token and User Id do not match' }))));
   });
 });
 
@@ -325,7 +345,7 @@ describe('/api/charities/signin', () => {
 
 describe('/api/charities/:charity_id', () => {
   describe('GET', () => {
-    test('should respond with a single charity object', () => request(app).get('/api/charities/1').expect(200).then(({ body }) => {
+    test('should respond with a single charity object if given a valid access token', () => request(app).get('/api/charities/1').expect(200).then(({ body }) => {
       expect(body.charity).toEqual({
         charity_id: 1,
         charity_name: 'Charity 1',
@@ -509,4 +529,49 @@ describe('/api/:charity_id/requirements', () => {
         expect(response.body.msg).toBe('Not found - request ID doesn\'t exist');
       }));
   });
+});
+
+
+// Donor donations
+describe('POST', () => {
+  const testRequest = {
+    category_name: 'food',
+    item_id: 1,
+    quantity_available: 10,
+  };
+  test('Status (201), posts a new donation', () => request(app)
+    .post('/api/1/donations')
+    .send(testRequest)
+    .then((response) => {
+      expect(response.body.donatorDonationObject).toBeInstanceOf(Object);
+      expect(response.body.donatorDonationObject).toEqual(expect.objectContaining({
+        donation_id: 11,
+        donator_id: 1,
+        category_name: 'food',
+        item_id: 1,
+        quantity_available: 10,
+        created_at: expect.any(String),
+      }));
+    }));
+});
+
+describe('PATCH', () => {
+  const testRequest = {
+    donation_id: '1',
+    quantity_available: '5',
+  };
+  test('status(200), update quantity of the donor donations', () => request(app)
+    .patch('/api/1/donations')
+    .send(testRequest)
+    .then((response) => {
+      expect(response.body.donatorDonationsObject).toBeInstanceOf(Object);
+      expect(response.body.donatorDonationsObject).toEqual(expect.objectContaining({
+        quantity_available: 20,
+        donation_id: 1,
+        donator_id: 1,
+        category_name: 'food',
+        item_id: 2,
+        created_at: expect.any(String),
+      }));
+    }));
 });
