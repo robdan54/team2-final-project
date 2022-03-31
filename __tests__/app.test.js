@@ -484,6 +484,7 @@ describe('/api/:charity_id/requirements', () => {
       category_name: 'food',
       item_id: '1',
       quantity_required: '200',
+      urgent: true,
     };
     test('Status (201), adds a foodbank\'s requirement to the database', () => request(app)
       .post('/api/1/requirements')
@@ -497,7 +498,7 @@ describe('/api/:charity_id/requirements', () => {
           item_id: 1,
           quantity_required: 200,
           request_id: expect.any(Number),
-          urgent: false,
+          urgent: true,
         }));
       }));
   });

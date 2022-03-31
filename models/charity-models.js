@@ -48,9 +48,11 @@ exports.fetchCharityRequirements = (charity_id) => db
   .then((result) => result.rows);
 
 exports.postCharityRequirement = (charity_id, requirement) => {
-  const { category_name, item_id, quantity_required } = requirement;
+  const {
+    category_name, item_id, quantity_required, urgent,
+  } = requirement;
 
-  return db.query('INSERT INTO charity_reqs (charity_id, category_name, item_id, quantity_required) VALUES ($1, $2, $3, $4) RETURNING *;', [charity_id, category_name, item_id, quantity_required])
+  return db.query('INSERT INTO charity_reqs (charity_id, category_name, item_id, quantity_required, urgent) VALUES ($1, $2, $3, $4, $5) RETURNING *;', [charity_id, category_name, item_id, quantity_required, urgent])
     .then((result) => result.rows[0]);
 };
 
