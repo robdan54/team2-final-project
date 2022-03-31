@@ -71,5 +71,5 @@ exports.patchDonations = (donator_id, requirement) => {
 exports.removeDonorDonation = (donation_id) => db.query('DELETE FROM donator_items where donation_id = $1;', [donation_id]);
 
 exports.fetchDonorDonations = (donator_id) => db
-  .query('SELECT donator_id, donation_id, donator_items.category_name, donator_items.item_id, donator_items.charity_id, quantity_available, created_at, item_name, charity_name FROM donator_items JOIN items ON donator_items.item_id = items.item_id JOIN charities_users ON donator_items.charity_id = charities_users.charity_id WHERE donator_id = $1;', [donator_id])
+  .query('SELECT donator_id, donation_id, donator_items.category_name, donator_items.item_id, donator_items.charity_id, quantity_available, created_at, item_name, charity_name, urgent FROM donator_items JOIN items ON donator_items.item_id = items.item_id JOIN charities_users ON donator_items.charity_id = charities_users.charity_id WHERE donator_id = $1;', [donator_id])
   .then((results) => results.rows);
