@@ -23,8 +23,6 @@ exports.postCharity = async (charity) => {
           RETURNING *;
           `, [charity_name, address, charity_website, bcrypt.hashSync(password, 2), email_address, latLng.latitude, latLng.longitude]);
 
-  // console.log(charityRow);
-
   return charityRow;
 };
 
