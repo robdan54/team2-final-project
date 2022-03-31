@@ -292,7 +292,8 @@
             "category_name": "food",
             "item_id": 1,
             "quantity_available": 10,
-            "charity_id": 5
+            "charity_id": 5,
+            "urgent": true
         },
         "example Response": {
             "donatorDonationObject": {
@@ -301,6 +302,7 @@
                 "category_name": "food",
                 "item_id": 1,
                 "quantity_available": 10,
+                "urgent": true,
                 "created_at": "2022-03-30T08:57:40.362Z"
               }
         }

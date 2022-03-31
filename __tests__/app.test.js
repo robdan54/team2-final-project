@@ -406,6 +406,7 @@ describe('api/:donator_id/donations', () => {
       item_id: 1,
       quantity_available: 10,
       charity_id: 1,
+      urgent: true,
     };
     test('Status (201), posts a new donation', () => request(app)
       .post('/api/1/donations')
@@ -419,6 +420,7 @@ describe('api/:donator_id/donations', () => {
           item_id: 1,
           quantity_available: 10,
           created_at: expect.any(String),
+          urgent: true,
         }));
       }));
   });

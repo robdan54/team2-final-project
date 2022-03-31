@@ -53,6 +53,7 @@ const createTables = async () => {
     item_id INT NOT NULL REFERENCES items(item_id),
     charity_id INT NOT NULL REFERENCES charities_users(charity_id) ON DELETE CASCADE,
     quantity_available INT NOT NULL,
+    urgent BOOLEAN DEFAULT false,
     created_at TIMESTAMP DEFAULT NOW()
   )`);
 };

@@ -52,10 +52,10 @@ exports.fetchDonorById = (donator_id) => db.query('SELECT donator_id, username, 
 
 exports.postDonation = (donator_id, donation) => {
   const {
-    category_name, item_id, quantity_available, charity_id,
+    category_name, item_id, quantity_available, charity_id, urgent,
   } = donation;
 
-  return db.query('INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available, charity_id) VALUES ($1, $2, $3, $4, $5) RETURNING *;', [donator_id, category_name, item_id, quantity_available, charity_id])
+  return db.query('INSERT INTO donator_items (donator_id, category_name, item_id, quantity_available, charity_id, urgent) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;', [donator_id, category_name, item_id, quantity_available, charity_id, urgent])
     .then((result) => result.rows[0]);
 };
 
