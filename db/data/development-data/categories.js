@@ -1,20 +1,20 @@
 module.exports = [
   {
-    categoryName: 'food',
+    categoryName: 'Food',
   },
   {
-    categoryName: 'furniture',
+    categoryName: 'Furniture',
   },
   {
-    categoryName: 'toiletries',
+    categoryName: 'Toiletries',
   },
   {
-    categoryName: 'household items',
+    categoryName: 'Household',
   },
   {
-    categoryName: 'feminine products',
+    categoryName: 'Feminine products',
   },
   {
-    categoryName: 'baby supplies',
+    categoryName: 'Baby supplies',
   },
 ];
