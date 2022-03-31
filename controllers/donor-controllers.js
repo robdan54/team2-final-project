@@ -9,7 +9,7 @@ const {
   fetchDonorDonations,
   fetchDonorById,
   postDonation,
-  removeDonorById
+  removeDonorById,
 } = require('../models/donor-models');
 
 const config = require('../config/auth.config');

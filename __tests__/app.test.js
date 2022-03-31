@@ -187,8 +187,7 @@ describe('/api/donors/:donator_id', () => {
         .then(({ body }) => expect(body).toEqual({ msg: 'Token and User Id do not match' }))));
   });
   describe('DELETE', () => {
-    test('Status (204), responds with an empty response body', () =>
-      request(app).delete('/api/charities/1').expect(204));
+    test('Status (204), responds with an empty response body', () => request(app).delete('/api/charities/1').expect(204));
   });
 });
 
