@@ -1,214 +1,214 @@
 module.exports = [
   {
     itemName: 'Cereal',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Soup',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Pasta',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Table',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Chair',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Deodorant',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Shower gel',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Toothbrush',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Soap',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Toothpaste',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Shampoo',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Face Wash',
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
   },
   {
     itemName: 'Laundry detergent',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Washing up liquid',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Fabric Softener',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Towel',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Blanket',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Dish cloth',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Saucepan',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Disinfecting wipes',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Cleaning cloth',
-    categoryName: 'Household',
+    categoryName: 'household items',
   },
   {
     itemName: 'Sanitary towels',
-    categoryName: 'Feminine products',
+    categoryName: 'feminine products',
   },
   {
     itemName: 'Tampons',
-    categoryName: 'Feminine products',
+    categoryName: 'feminine products',
   },
   {
     itemName: 'Nappies',
-    categoryName: 'Baby supplies',
+    categoryName: 'baby supplies',
   },
   {
     itemName: 'Baby wipes',
-    categoryName: 'Baby supplies',
+    categoryName: 'baby supplies',
   },
   {
     itemName: 'Baby food',
-    categoryName: 'Baby supplies',
+    categoryName: 'baby supplies',
   },
   {
     itemName: 'Jar of coffee',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Baked beans',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Tinned tuna',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Rice pudding',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Custard',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Corned beef',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'SPAM',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'UHT milk',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Sugar',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Tea',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Rice',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Tinned soup',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Tinned tomatoes',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Pasta sauce',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Tinned peaches',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Tinned pineapple',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Biscuits',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Chocolate',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Orange Juice',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Apple Juice',
-    categoryName: 'Food',
+    categoryName: 'food',
   },
   {
     itemName: 'Desk',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Bedframe',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Bedside table',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Sofa',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Nightstans',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Mirror',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
   {
     itemName: 'Bookcase',
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
   },
 ];

@@ -1,7 +1,7 @@
 module.exports = [
   {
     donator_id: 1,
-    categoryName: 'Food',
+    categoryName: 'food',
     item_id: 2,
     itemName: 'Soup',
     quantityAvailable: '15',
@@ -9,7 +9,7 @@ module.exports = [
   },
   {
     donator_id: 1,
-    categoryName: 'Food',
+    categoryName: 'food',
     item_id: 1,
     itemName: 'Cereal',
     quantityAvailable: '15',
@@ -17,7 +17,7 @@ module.exports = [
   },
   {
     donator_id: 3,
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
     item_id: 6,
     itemName: 'Deodorant',
     quantityAvailable: '6',
@@ -25,7 +25,7 @@ module.exports = [
   },
   {
     donator_id: 4,
-    categoryName: 'Baby supplies',
+    categoryName: 'baby supplies',
     item_id: 14,
     itemName: 'Nappies',
     quantityAvailable: '150',
@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     donator_id: 4,
-    categoryName: 'Baby supplies',
+    categoryName: 'baby supplies',
     item_id: 15,
     itemName: 'Baby wipes',
     quantityAvailable: '10',
@@ -42,7 +42,7 @@ module.exports = [
   },
   {
     donator_id: 4,
-    categoryName: 'Baby supplies',
+    categoryName: 'baby supplies',
     item_id: 16,
     itemName: 'Baby food',
     quantityAvailable: '50',
@@ -51,7 +51,7 @@ module.exports = [
   },
   {
     donator_id: 5,
-    categoryName: 'Food',
+    categoryName: 'food',
     item_id: 3,
     itemName: 'Pasta',
     quantityAvailable: '10',
@@ -60,7 +60,7 @@ module.exports = [
   },
   {
     donator_id: 5,
-    categoryName: 'Furniture',
+    categoryName: 'furniture',
     item_id: 5,
     itemName: 'Table',
     quantityAvailable: '1',
@@ -69,7 +69,7 @@ module.exports = [
   },
   {
     donator_id: 5,
-    categoryName: 'Toiletries',
+    categoryName: 'toiletries',
     item_id: 8,
     itemName: 'Shower gel',
     quantityAvailable: '12',
@@ -78,7 +78,7 @@ module.exports = [
   },
   {
     donator_id: 5,
-    categoryName: 'Feminine products',
+    categoryName: 'feminine products',
     item_id: 12,
     itemName: 'Sanitary towels',
     quantityAvailable: '10',
