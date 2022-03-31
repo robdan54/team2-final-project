@@ -12,9 +12,4 @@ exports.verifyDonorToken = (req) => {
     if (decoded.donator_id !== Number.parseInt(req.params.donator_id, 10)) return Promise.reject({ status: 403, msg: 'Token and User Id do not match' });
     return Promise.resolve(true);
   });
-
-//   if (decoded.charity_id === Number.parseInt(req.params.charity_id, 10)) {
-//     return Promise.resolve(true);
-//   }
-//   return Promise.reject({ status: 401, msg: 'Token and User Id do not match' });
 };
