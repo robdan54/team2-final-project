@@ -388,6 +388,7 @@ describe('api/:donator_id/donations', () => {
               created_at: expect.any(String),
               item_name: expect.any(String),
               charity_name: expect.any(String),
+              urgent: expect.any(Boolean),
             }),
           );
         });
