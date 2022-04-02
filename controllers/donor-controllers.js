@@ -9,6 +9,7 @@ const {
   fetchDonorDonations,
   fetchDonorById,
   postDonation,
+  removeDonorById,
 } = require('../models/donor-models');
 
 const config = require('../config/auth.config');
@@ -100,6 +101,18 @@ exports.getDonorDonations = (req, res, next) => {
   checkDonorExists(donator_id).then(() => fetchDonorDonations(donator_id))
     .then((response) => {
       res.status(200).send({ donatorDonations: response });
+    })
+    .catch(next);
+};
+
+exports.deleteDonorById = (req, res, next) => {
+  const { donator_id } = req.params;
+  checkDonorExists(donator_id)
+    .then(() => {
+      removeDonorById(donator_id);
+    })
+    .then(() => {
+      res.sendStatus(204);
     })
     .catch(next);
 };

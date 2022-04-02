@@ -13,6 +13,7 @@ const {
   deleteDonorDonation,
   getDonorById,
   getDonorDonations,
+  deleteDonorById,
 
 } = require('./controllers/donor-controllers');
 
@@ -65,6 +66,7 @@ app.get('/api/donors', getDonors);
 app.get('/api/donors/:donator_id', getDonorById);
 app.post('/api/donors', sendDonor);
 app.post('/api/donors/signin', signInDonor);
+app.delete('/api/donors/:donator_id', deleteDonorById);
 
 // CHARITY ENDPOINTS
 app.get('/api/charities', getCharities);

@@ -186,6 +186,9 @@ describe('/api/donors/:donator_id', () => {
       }).then(({ body: { accessToken } }) => request(app).get('/api/donors/2').set({ 'x-access-token': accessToken }).expect(403)
         .then(({ body }) => expect(body).toEqual({ msg: 'Token and User Id do not match' }))));
   });
+  describe('DELETE', () => {
+    test('Status (204), responds with an empty response body', () => request(app).delete('/api/charities/1').expect(204));
+  });
 });
 
 // CHARITY TESTS
